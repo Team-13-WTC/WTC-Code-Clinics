@@ -1,0 +1,201 @@
+[
+    {
+        "kind": "calendar#event",
+        "etag": "\"3210202213166000\"",
+        "id": "rhob2coh53ids07iq97m35ha9c",
+        "status": "confirmed",
+        "htmlLink": "https://www.google.com/calendar/event?eid=cmhvYjJjb2g1M2lkczA3aXE5N20zNWhhOWMgYWxlc3Npb2Rld0Bt",
+        "created": "2020-11-10T07:48:11.000Z",
+        "updated": "2020-11-11T13:25:06.583Z",
+        "summary": "Code",
+        "description": "anything goes - module importing",
+        "location": "cpt",
+        "creator": {
+            "email": "alessiodew@gmail.com",
+            "self": true
+        },
+        "organizer": {
+            "email": "alessiodew@gmail.com",
+            "self": true
+        },
+        "start": {
+            "dateTime": "2020-11-11T16:00:00+02:00",
+            "timeZone": "Africa/Johannesburg"
+        },
+        "end": {
+            "dateTime": "2020-11-11T16:30:00+02:00",
+            "timeZone": "Africa/Johannesburg"
+        },
+        "iCalUID": "rhob2coh53ids07iq97m35ha9c@google.com",
+        "sequence": 0,
+        "attendees": [
+            {
+                "email": "not_valid_user@student.wethinkcode.co.za",
+                "responseStatus": "needsAction"
+            },
+            {
+                "email": "mvan-sch@student.wethinkcode.co.za",
+                "responseStatus": "needsAction"
+            }
+        ],
+        "reminders": {
+            "useDefault": true
+        }
+    },
+    {
+        "kind": "calendar#event",
+        "etag": "\"3210195271696000\"",
+        "id": "ilo4i9bka86iuu9ealr680dtdc",
+        "status": "confirmed",
+        "htmlLink": "https://www.google.com/calendar/event?eid=aWxvNGk5YmthODZpdXU5ZWFscjY4MGR0ZGMgYWxlc3Npb2Rld0Bt",
+        "created": "2020-11-11T11:32:35.000Z",
+        "updated": "2020-11-11T12:27:15.848Z",
+        "summary": "rt",
+        "description": "anything",
+        "location": "CPT",
+        "creator": {
+            "email": "alessiodew@gmail.com",
+            "self": true
+        },
+        "organizer": {
+            "email": "alessiodew@gmail.com",
+            "self": true
+        },
+        "start": {
+            "dateTime": "2020-11-11T17:00:00+02:00",
+            "timeZone": "Africa/Johannesburg"
+        },
+        "end": {
+            "dateTime": "2020-11-11T17:30:00+02:00",
+            "timeZone": "Africa/Johannesburg"
+        },
+        "iCalUID": "ilo4i9bka86iuu9ealr680dtdc@google.com",
+        "sequence": 0,
+        "attendees": [
+            {
+                "email": "mvan-sch@student.wethinkcode.co.za",
+                "responseStatus": "declined"
+            }
+        ],
+        "reminders": {
+            "useDefault": true
+        }
+    },
+    {
+        "kind": "calendar#event",
+        "etag": "\"3210195280046000\"",
+        "id": "krccuoo0bg9npivv8j5nimvrc8",
+        "status": "confirmed",
+        "htmlLink": "https://www.google.com/calendar/event?eid=a3JjY3VvbzBiZzlucGl2djhqNW5pbXZyYzggYWxlc3Npb2Rld0Bt",
+        "created": "2020-11-09T14:50:32.000Z",
+        "updated": "2020-11-11T12:27:20.023Z",
+        "summary": "CODE CLINIC",
+        "description": "anything goes",
+        "location": "cpt",
+        "creator": {
+            "email": "alessiodew@gmail.com",
+            "self": true
+        },
+        "organizer": {
+            "email": "alessiodew@gmail.com",
+            "self": true
+        },
+        "start": {
+            "dateTime": "2020-11-13T11:00:00+02:00",
+            "timeZone": "Africa/Johannesburg"
+        },
+        "end": {
+            "dateTime": "2020-11-13T11:30:00+02:00",
+            "timeZone": "Africa/Johannesburg"
+        },
+        "iCalUID": "krccuoo0bg9npivv8j5nimvrc8@google.com",
+        "sequence": 0,
+        "attendees": [
+            {
+                "email": "mvan-sch@student.wethinkcode.co.za",
+                "responseStatus": "declined"
+            }
+        ],
+        "reminders": {
+            "useDefault": true
+        }
+    },
+    {
+        "kind": "calendar#event",
+        "etag": "\"3209866945346000\"",
+        "id": "ld2ig388q3qefa5d7nsbloblhc",
+        "status": "confirmed",
+        "htmlLink": "https://www.google.com/calendar/event?eid=bGQyaWczODhxM3FlZmE1ZDduc2Jsb2JsaGMgYWxlc3Npb2Rld0Bt",
+        "created": "2020-11-09T14:51:12.000Z",
+        "updated": "2020-11-09T14:51:12.673Z",
+        "summary": "CODE CLINIC",
+        "description": "anything goes",
+        "location": "cpt",
+        "creator": {
+            "email": "alessiodew@gmail.com",
+            "self": true
+        },
+        "organizer": {
+            "email": "alessiodew@gmail.com",
+            "self": true
+        },
+        "start": {
+            "dateTime": "2020-11-13T12:00:00+02:00",
+            "timeZone": "Africa/Johannesburg"
+        },
+        "end": {
+            "dateTime": "2020-11-13T12:30:00+02:00",
+            "timeZone": "Africa/Johannesburg"
+        },
+        "iCalUID": "ld2ig388q3qefa5d7nsbloblhc@google.com",
+        "sequence": 0,
+        "attendees": [
+            {
+                "email": "hnaicker@student.wethinkcode.co.za",
+                "responseStatus": "needsAction"
+            }
+        ],
+        "reminders": {
+            "useDefault": true
+        }
+    },
+    {
+        "kind": "calendar#event",
+        "etag": "\"3209867086250000\"",
+        "id": "18ot6l7v6blvnocq70k7ffvo2g",
+        "status": "confirmed",
+        "htmlLink": "https://www.google.com/calendar/event?eid=MThvdDZsN3Y2Ymx2bm9jcTcwazdmZnZvMmcgYWxlc3Npb2Rld0Bt",
+        "created": "2020-11-09T14:52:23.000Z",
+        "updated": "2020-11-09T14:52:23.125Z",
+        "summary": "CODE CLINIC",
+        "description": "anything goes",
+        "location": "cpt",
+        "creator": {
+            "email": "alessiodew@gmail.com",
+            "self": true
+        },
+        "organizer": {
+            "email": "alessiodew@gmail.com",
+            "self": true
+        },
+        "start": {
+            "dateTime": "2020-11-13T14:00:00+02:00",
+            "timeZone": "Africa/Johannesburg"
+        },
+        "end": {
+            "dateTime": "2020-11-13T14:30:00+02:00",
+            "timeZone": "Africa/Johannesburg"
+        },
+        "iCalUID": "18ot6l7v6blvnocq70k7ffvo2g@google.com",
+        "sequence": 0,
+        "attendees": [
+            {
+                "email": "hnaicker@student.wethinkcode.co.za",
+                "responseStatus": "needsAction"
+            }
+        ],
+        "reminders": {
+            "useDefault": true
+        }
+    }
+]
