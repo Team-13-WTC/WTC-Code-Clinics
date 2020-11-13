@@ -102,32 +102,32 @@ def dates():
     " [(e.g 2020-06-30 ) You can only plan 30 days in advance.]: " )
 
     #return date
-     date = date.split('-')
+    date = date.split('-')
 
-     if len(date) == 3:
-         if date[1].upper() in days_31:
-             if int(date[2]) <= 31 and int(date[2]) > 0:
-                 date_str = date_str.join(date)
-                 return date_str.upper()
-             else:
-                 print("Please choose a valid day within the chosen month.")
-         if date[1].upper() in days_30:
-             if int(date[2]) <= 30 and int(date[2]) > 0:
-                 date_str = date_str.join(date)
-                 return date_str.upper()
-             else:
-                 print("Please choose a valid day within the chosen month.")
-         if date[1].upper() in exception_days:
-             if int(date[2]) <= 28 and int(date[2]) > 0:
-                 date_str = date_str.join(date)
-                 return date_str.upper()
-             else:
-                 print("Please choose a valid day in the chosen month.")
-         else:
-             print("Please choose an actual month.")
-     else: 
-         print("Please formulate the date properly")
-         dates()
+    if len(date) == 3:
+        if date[1].upper() in days_31:
+            if int(date[2]) <= 31 and int(date[2]) > 0:
+                date_str = date_str.join(date)
+                return date_str.upper()
+            else:
+                print("Please choose a valid day within the chosen month.")
+        if date[1].upper() in days_30:
+            if int(date[2]) <= 30 and int(date[2]) > 0:
+                date_str = date_str.join(date)
+                return date_str.upper()
+            else:
+                print("Please choose a valid day within the chosen month.")
+        if date[1].upper() in exception_days:
+            if int(date[2]) <= 28 and int(date[2]) > 0:
+                date_str = date_str.join(date)
+                return date_str.upper()
+            else:
+                print("Please choose a valid day in the chosen month.")
+        else:
+            print("Please choose an actual month.")
+    else: 
+        print("Please formulate the date properly")
+        dates()
 
 
 def timing():
