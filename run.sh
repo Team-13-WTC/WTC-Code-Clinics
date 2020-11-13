@@ -2,7 +2,7 @@
 
 if [[ ! -d "env" ]]
 then
-    python3 -m venv env
+    python3 -m venv .
 fi
 
 source run
