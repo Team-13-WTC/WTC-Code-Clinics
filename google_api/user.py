@@ -13,7 +13,7 @@ def name():
     """
     # This needs to be completed with the user login name.
     print("**************************************")
-    print("**Welcome to WTC Code_Clinic booking**")
+    print("**Welcome to WTC_Code Clinic booking**")
     print("**************************************")
     user_name = input("What is your username? ")
     if user_name.lower() == 'voldermort':

@@ -219,7 +219,7 @@ def delete_event(id):
 mock function calls
 """
 # 08:30 10:00 11:30 13:00 14:30 16:00 
-# get_calendar(2)
+get_calendar(7)
 # create_event("Code", "cpt", "anything goes", '2020-11-11', '16:00', 'not_valid_user')
 # create_event(title, location, speciality, date, time, username)
 # add_attendee("sahlrlh44sj1stkng8kvpkstqk", "mvan-sch", 'how to submit TR 5')
