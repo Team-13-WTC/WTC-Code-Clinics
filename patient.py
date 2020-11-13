@@ -43,7 +43,7 @@ def create_booking(user_name, command, user_type, command_list):
         # location = user_location(user_name, command)                #stores user location
         # date = dates()                                              #stores the date the user has chosed
         # time = timing()                                             #stores the time the user has set
-        print("Thank you for booking a slot. Here are the details")
+        print("Thank you for booking a slot.")
 
         # print("Title: CODE CLINIC PATIENT")
         # print("Patient: " + user_name)
