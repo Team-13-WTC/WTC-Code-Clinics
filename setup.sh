@@ -1,5 +1,5 @@
 #!/bin/bash
 echo alias WTC_CLINIC="$PWD/run.sh" >> ~/.bashrc
-echo alias WTC_CLINIC="$PWD/run.sh" >> ~/.zshrc
 source ~/.bashrc
+echo alias WTC_CLINIC="$PWD/run.sh" >> ~/.zshrc
 exec /bin/zsh
