@@ -8,14 +8,7 @@ import os.path
 import pickle
 import json
 from resources import read_conf as config
-"""
-TODO:   change calendar_id to be a variable retrieved from config instead of hard coded
-        days_to_get variable retrieved from config instead of sent as a parameter
-        username variable retrieved from config instead of sent as a parameter
-        location variable retrieved from config instead of sent as a parameter
 
-
-"""
 
 def populate_credentials():
     """
@@ -190,7 +183,7 @@ def delete_event(id):
 mock function calls
 """
 
-get_calendar()
+# get_calendar()
 # create_event("anything goes", '2020-12-11', '10:00')
 # add_attendee("e2lfek90lahil4ip1bt41efe54", 'my TDD broke')
 # remove_attendee("e2lfek90lahil4ip1bt41efe54")
