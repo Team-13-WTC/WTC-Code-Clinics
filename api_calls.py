@@ -7,7 +7,7 @@ import datetime
 import os.path
 import pickle
 import json
-
+from resources import read_conf as config
 """
 TODO:   change calendar_id to be a variable retrieved from config instead of hard coded
         days_to_get variable retrieved from config instead of sent as a parameter
@@ -51,12 +51,14 @@ def populate_credentials():
         
     return service
 
-def get_calendar(days_to_get):
+def get_calendar():
     """
     Retrieves Code Clinic calendar and stores the events in a JSON file
     Parameter:  int - How many days in advance to retrieve the events
     Returns:    nothing
     """
+    days_to_get = int(config.retrieve_variable('days_to_get'))
+    calendar = config.retrieve_variable('calendar')
 
     service = populate_credentials()
 
@@ -66,7 +68,7 @@ def get_calendar(days_to_get):
     end_filter = (datetime.datetime.utcnow()+timedelta(days = days_to_get)).isoformat() + 'Z'
     
     # Call the Calendar API
-    events_result = service.events().list(calendarId = 'ugs23ckjeisrk564oao0va6d3o@group.calendar.google.com', 
+    events_result = service.events().list(calendarId = calendar, 
                     timeMin = start_filter, 
                     timeMax = end_filter, 
                     singleEvents = True,                              
@@ -76,8 +78,10 @@ def get_calendar(days_to_get):
     with open('calendar_pull.json', 'w') as outfile:
         json.dump(events_result, outfile, indent=4)
 
+    return events_result
 
-def create_event(location, speciality, date, time, username):
+
+def create_event(speciality, date, time):
     """
     Sends API request to create an event
     Parameter:  title: name of event
@@ -88,6 +92,9 @@ def create_event(location, speciality, date, time, username):
                 username: username of volunteer
     Returns:    link to the event
     """
+    location = config.retrieve_variable('campus')
+    username = config.retrieve_variable('username')
+    calendar = config.retrieve_variable('calendar')
 
     service = populate_credentials()
 
@@ -111,10 +118,10 @@ def create_event(location, speciality, date, time, username):
     }
 
     # call API to create event
-    event = service.events().insert(calendarId='ugs23ckjeisrk564oao0va6d3o@group.calendar.google.com', body=event, sendUpdates = 'all').execute()
+    event = service.events().insert(calendarId=calendar, body=event, sendUpdates = 'all').execute()
 
 
-def add_attendee(id, username, support_needed):
+def add_attendee(id, support_needed):
     """
     Sends API request to add an attendee to an event
     Parameter:  id: event identifier
@@ -123,10 +130,12 @@ def add_attendee(id, username, support_needed):
     Returns:    link to the event
     """
 
+    username = config.retrieve_variable('username')
     service = populate_credentials()
+    calendar = config.retrieve_variable('calendar')
 
     # First retrieve the event from the API.
-    event = service.events().get(calendarId='ugs23ckjeisrk564oao0va6d3o@group.calendar.google.com', eventId=id).execute()
+    event = service.events().get(calendarId=calendar, eventId=id).execute()
 
     # update attendee
     event['attendees'] = [
@@ -137,7 +146,7 @@ def add_attendee(id, username, support_needed):
     event['description'] = f"{event['description']} - {support_needed}"
 
     # API call to send updated information
-    service.events().update(calendarId='ugs23ckjeisrk564oao0va6d3o@group.calendar.google.com', eventId=event['id'], body=event, sendUpdates = 'all').execute()
+    service.events().update(calendarId=calendar, eventId=event['id'], body=event, sendUpdates = 'all').execute()
 
 
 def remove_attendee(id):
@@ -147,10 +156,11 @@ def remove_attendee(id):
     Returns:    link to the event
     """
    
+    calendar = config.retrieve_variable('calendar')
     service = populate_credentials()
 
     # First retrieve the event from the API.
-    event = service.events().get(calendarId='ugs23ckjeisrk564oao0va6d3o@group.calendar.google.com', eventId=id).execute()
+    event = service.events().get(calendarId=calendar, eventId=id).execute()
 
     # update attendee
     event['attendees'] = [
@@ -160,7 +170,7 @@ def remove_attendee(id):
     event['description'] = (event['description'].split(" -"))[0]
 
     # API call to send updated information
-    service.events().update(calendarId='ugs23ckjeisrk564oao0va6d3o@group.calendar.google.com', eventId=event['id'], body=event, sendUpdates = 'all').execute()
+    service.events().update(calendarId=calendar, eventId=event['id'], body=event, sendUpdates = 'all').execute()
 
 
 def delete_event(id):
@@ -170,18 +180,19 @@ def delete_event(id):
     Returns:    nothing
     """
 
+    calendar = config.retrieve_variable('calendar')
     service = populate_credentials()
 
-    service.events().delete(calendarId='ugs23ckjeisrk564oao0va6d3o@group.calendar.google.com', eventId=id, sendUpdates = 'all').execute()
+    service.events().delete(calendarId=calendar, eventId=id, sendUpdates = 'all').execute()
 
 
 """
 mock function calls
 """
 
-# get_calendar(30)
-# create_event("CPT", "anything goes", '2020-12-10', '10:00', 'not_valid')
-# add_attendee("22dptob08akf4lklv2j9d37sbc", "not_valid", 'my TDD broke')
-# remove_attendee("22dptob08akf4lklv2j9d37sbc")
-# delete_event("22dptob08akf4lklv2j9d37sbc")
+get_calendar()
+# create_event("anything goes", '2020-12-11', '10:00')
+# add_attendee("e2lfek90lahil4ip1bt41efe54", 'my TDD broke')
+# remove_attendee("e2lfek90lahil4ip1bt41efe54")
+# delete_event("e2lfek90lahil4ip1bt41efe54")
 
