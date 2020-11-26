@@ -1,0 +1,317 @@
+{
+    "kind": "calendar#events",
+    "etag": "\"p33cf7c5ti6geq0g\"",
+    "summary": "Team 13 Calendar",
+    "description": "We're just kids trying stuff",
+    "updated": "2020-11-26T11:46:20.311Z",
+    "timeZone": "Africa/Johannesburg",
+    "accessRole": "owner",
+    "defaultReminders": [],
+    "items": [
+        {
+            "kind": "calendar#event",
+            "etag": "\"3212418581204000\"",
+            "id": "ebrfp5n42vbva6vf1rutptjnnk",
+            "status": "confirmed",
+            "htmlLink": "https://www.google.com/calendar/event?eid=ZWJyZnA1bjQydmJ2YTZ2ZjFydXRwdGpubmsgdWdzMjNja2plaXNyazU2NG9hbzB2YTZkM29AZw",
+            "created": "2020-11-24T09:14:50.000Z",
+            "updated": "2020-11-24T09:14:50.602Z",
+            "summary": "Code Clinic - hnaicker",
+            "description": "anything goes",
+            "location": "cpt",
+            "creator": {
+                "email": "hnaicker@student.wethinkcode.co.za"
+            },
+            "organizer": {
+                "email": "ugs23ckjeisrk564oao0va6d3o@group.calendar.google.com",
+                "displayName": "Team 13 Calendar",
+                "self": true
+            },
+            "start": {
+                "dateTime": "2020-11-26T14:00:00+02:00",
+                "timeZone": "Africa/Johannesburg"
+            },
+            "end": {
+                "dateTime": "2020-11-26T14:30:00+02:00",
+                "timeZone": "Africa/Johannesburg"
+            },
+            "iCalUID": "ebrfp5n42vbva6vf1rutptjnnk@google.com",
+            "sequence": 0,
+            "reminders": {
+                "useDefault": true
+            }
+        },
+        {
+            "kind": "calendar#event",
+            "etag": "\"3212420925098000\"",
+            "id": "l6a19pk8sdt233amtscpv4idpc",
+            "status": "confirmed",
+            "htmlLink": "https://www.google.com/calendar/event?eid=bDZhMTlwazhzZHQyMzNhbXRzY3B2NGlkcGMgdWdzMjNja2plaXNyazU2NG9hbzB2YTZkM29AZw",
+            "created": "2020-11-24T09:31:26.000Z",
+            "updated": "2020-11-24T09:34:22.549Z",
+            "summary": "Code Clinic - mvan-sch",
+            "description": "anything goes",
+            "location": "cpt",
+            "creator": {
+                "email": "mvan-sch@student.wethinkcode.co.za"
+            },
+            "organizer": {
+                "email": "ugs23ckjeisrk564oao0va6d3o@group.calendar.google.com",
+                "displayName": "Team 13 Calendar",
+                "self": true
+            },
+            "start": {
+                "dateTime": "2020-11-27T13:00:00+02:00",
+                "timeZone": "Africa/Johannesburg"
+            },
+            "end": {
+                "dateTime": "2020-11-27T13:30:00+02:00",
+                "timeZone": "Africa/Johannesburg"
+            },
+            "iCalUID": "l6a19pk8sdt233amtscpv4idpc@google.com",
+            "sequence": 0,
+            "attendees": [
+                {
+                    "email": "hnaicker@student.wethinkcode.co.za",
+                    "responseStatus": "needsAction"
+                }
+            ],
+            "hangoutLink": "https://meet.google.com/nfn-tyng-vye",
+            "conferenceData": {
+                "entryPoints": [
+                    {
+                        "entryPointType": "video",
+                        "uri": "https://meet.google.com/nfn-tyng-vye",
+                        "label": "meet.google.com/nfn-tyng-vye"
+                    },
+                    {
+                        "entryPointType": "more",
+                        "uri": "https://tel.meet/nfn-tyng-vye?pin=4597392149185",
+                        "pin": "4597392149185"
+                    },
+                    {
+                        "regionCode": "ZA",
+                        "entryPointType": "phone",
+                        "uri": "tel:+27-10-823-0731",
+                        "label": "+27 10 823 0731",
+                        "pin": "134318337"
+                    }
+                ],
+                "conferenceSolution": {
+                    "key": {
+                        "type": "hangoutsMeet"
+                    },
+                    "name": "Google Meet",
+                    "iconUri": "https://fonts.gstatic.com/s/i/productlogos/meet_2020q4/v6/web-512dp/logo_meet_2020q4_color_2x_web_512dp.png"
+                },
+                "conferenceId": "nfn-tyng-vye",
+                "signature": "AGkP/s2lMiHQZhHAPy+4YtmgVvtq"
+            },
+            "reminders": {
+                "useDefault": true
+            }
+        },
+        {
+            "kind": "calendar#event",
+            "etag": "\"3212418529206000\"",
+            "id": "80t91uadtqcmg4m5dbjse6n83g",
+            "status": "confirmed",
+            "htmlLink": "https://www.google.com/calendar/event?eid=ODB0OTF1YWR0cWNtZzRtNWRianNlNm44M2cgdWdzMjNja2plaXNyazU2NG9hbzB2YTZkM29AZw",
+            "created": "2020-11-24T09:14:24.000Z",
+            "updated": "2020-11-24T09:14:24.603Z",
+            "summary": "Code Clinic - hnaicker",
+            "description": "anything goes",
+            "location": "cpt",
+            "creator": {
+                "email": "hnaicker@student.wethinkcode.co.za"
+            },
+            "organizer": {
+                "email": "ugs23ckjeisrk564oao0va6d3o@group.calendar.google.com",
+                "displayName": "Team 13 Calendar",
+                "self": true
+            },
+            "start": {
+                "dateTime": "2020-11-27T14:00:00+02:00",
+                "timeZone": "Africa/Johannesburg"
+            },
+            "end": {
+                "dateTime": "2020-11-27T14:30:00+02:00",
+                "timeZone": "Africa/Johannesburg"
+            },
+            "iCalUID": "80t91uadtqcmg4m5dbjse6n83g@google.com",
+            "sequence": 0,
+            "reminders": {
+                "useDefault": true
+            }
+        },
+        {
+            "kind": "calendar#event",
+            "etag": "\"3212782343954000\"",
+            "id": "6ifsj7853km9utpavv63030ah0",
+            "status": "confirmed",
+            "htmlLink": "https://www.google.com/calendar/event?eid=Nmlmc2o3ODUza205dXRwYXZ2NjMwMzBhaDAgdWdzMjNja2plaXNyazU2NG9hbzB2YTZkM29AZw",
+            "created": "2020-11-26T10:28:18.000Z",
+            "updated": "2020-11-26T11:46:11.977Z",
+            "summary": "Code Clinic - mvan-sch",
+            "description": "anything goes",
+            "location": "cpt",
+            "creator": {
+                "email": "mvan-sch@student.wethinkcode.co.za"
+            },
+            "organizer": {
+                "email": "ugs23ckjeisrk564oao0va6d3o@group.calendar.google.com",
+                "displayName": "Team 13 Calendar",
+                "self": true
+            },
+            "start": {
+                "dateTime": "2020-11-28T13:00:00+02:00",
+                "timeZone": "Africa/Johannesburg"
+            },
+            "end": {
+                "dateTime": "2020-11-28T13:30:00+02:00",
+                "timeZone": "Africa/Johannesburg"
+            },
+            "iCalUID": "6ifsj7853km9utpavv63030ah0@google.com",
+            "sequence": 0,
+            "attendees": [
+                {
+                    "email": "kbintcli@student.wethinkcode.co.za",
+                    "responseStatus": "needsAction"
+                }
+            ],
+            "hangoutLink": "https://meet.google.com/sch-rurd-aqj",
+            "conferenceData": {
+                "entryPoints": [
+                    {
+                        "entryPointType": "video",
+                        "uri": "https://meet.google.com/sch-rurd-aqj",
+                        "label": "meet.google.com/sch-rurd-aqj"
+                    },
+                    {
+                        "entryPointType": "more",
+                        "uri": "https://tel.meet/sch-rurd-aqj?pin=5690317598261",
+                        "pin": "5690317598261"
+                    },
+                    {
+                        "regionCode": "ZA",
+                        "entryPointType": "phone",
+                        "uri": "tel:+27-10-823-1316",
+                        "label": "+27 10 823 1316",
+                        "pin": "734737160"
+                    }
+                ],
+                "conferenceSolution": {
+                    "key": {
+                        "type": "hangoutsMeet"
+                    },
+                    "name": "Google Meet",
+                    "iconUri": "https://fonts.gstatic.com/s/i/productlogos/meet_2020q4/v6/web-512dp/logo_meet_2020q4_color_2x_web_512dp.png"
+                },
+                "conferenceId": "sch-rurd-aqj",
+                "signature": "AGkP/s2IINWwbm8A30LBYLMwbov+"
+            },
+            "reminders": {
+                "useDefault": true
+            }
+        },
+        {
+            "kind": "calendar#event",
+            "etag": "\"3212414220728000\"",
+            "id": "1nec0npa7f86jihb7c173lnpkk",
+            "status": "confirmed",
+            "htmlLink": "https://www.google.com/calendar/event?eid=MW5lYzBucGE3Zjg2amloYjdjMTczbG5wa2sgdWdzMjNja2plaXNyazU2NG9hbzB2YTZkM29AZw",
+            "created": "2020-11-24T08:38:30.000Z",
+            "updated": "2020-11-24T08:38:30.364Z",
+            "summary": "Code Clinic - hnaicker",
+            "description": "anything goes",
+            "location": "cpt",
+            "creator": {
+                "email": "hnaicker@student.wethinkcode.co.za"
+            },
+            "organizer": {
+                "email": "ugs23ckjeisrk564oao0va6d3o@group.calendar.google.com",
+                "displayName": "Team 13 Calendar",
+                "self": true
+            },
+            "start": {
+                "dateTime": "2020-11-28T14:00:00+02:00",
+                "timeZone": "Africa/Johannesburg"
+            },
+            "end": {
+                "dateTime": "2020-11-28T14:30:00+02:00",
+                "timeZone": "Africa/Johannesburg"
+            },
+            "iCalUID": "1nec0npa7f86jihb7c173lnpkk@google.com",
+            "sequence": 0,
+            "reminders": {
+                "useDefault": true
+            }
+        },
+        {
+            "kind": "calendar#event",
+            "etag": "\"3212782325138000\"",
+            "id": "kf1e4bee5dj1bgmegmcqi270g8",
+            "status": "confirmed",
+            "htmlLink": "https://www.google.com/calendar/event?eid=a2YxZTRiZWU1ZGoxYmdtZWdtY3FpMjcwZzggdWdzMjNja2plaXNyazU2NG9hbzB2YTZkM29AZw",
+            "created": "2020-11-26T11:46:02.000Z",
+            "updated": "2020-11-26T11:46:02.569Z",
+            "summary": "Code Clinic - kbintcli",
+            "description": "code",
+            "location": "cpt",
+            "creator": {
+                "email": "kbintcli@student.wethinkcode.co.za"
+            },
+            "organizer": {
+                "email": "ugs23ckjeisrk564oao0va6d3o@group.calendar.google.com",
+                "displayName": "Team 13 Calendar",
+                "self": true
+            },
+            "start": {
+                "dateTime": "2020-11-30T10:00:00+02:00",
+                "timeZone": "Africa/Johannesburg"
+            },
+            "end": {
+                "dateTime": "2020-11-30T10:30:00+02:00",
+                "timeZone": "Africa/Johannesburg"
+            },
+            "iCalUID": "kf1e4bee5dj1bgmegmcqi270g8@google.com",
+            "sequence": 0,
+            "reminders": {
+                "useDefault": true
+            }
+        },
+        {
+            "kind": "calendar#event",
+            "etag": "\"3212782360622000\"",
+            "id": "4jc3kol94447tlmao47g6ddmjc",
+            "status": "confirmed",
+            "htmlLink": "https://www.google.com/calendar/event?eid=NGpjM2tvbDk0NDQ3dGxtYW80N2c2ZGRtamMgdWdzMjNja2plaXNyazU2NG9hbzB2YTZkM29AZw",
+            "created": "2020-11-26T11:46:20.000Z",
+            "updated": "2020-11-26T11:46:20.311Z",
+            "summary": "Code Clinic - kbintcli",
+            "description": "code",
+            "location": "cpt",
+            "creator": {
+                "email": "kbintcli@student.wethinkcode.co.za"
+            },
+            "organizer": {
+                "email": "ugs23ckjeisrk564oao0va6d3o@group.calendar.google.com",
+                "displayName": "Team 13 Calendar",
+                "self": true
+            },
+            "start": {
+                "dateTime": "2020-12-05T12:30:00+02:00",
+                "timeZone": "Africa/Johannesburg"
+            },
+            "end": {
+                "dateTime": "2020-12-05T13:00:00+02:00",
+                "timeZone": "Africa/Johannesburg"
+            },
+            "iCalUID": "4jc3kol94447tlmao47g6ddmjc@google.com",
+            "sequence": 0,
+            "reminders": {
+                "useDefault": true
+            }
+        }
+    ]
+}
