@@ -97,7 +97,6 @@ def create_config(service, conf_name):
 
     store_dir = temp_config_dir()
 
-    print(store_dir)
     calendars_result = service.calendarList().list().execute()
     calendars = calendars_result.get('items', [])
     
@@ -105,6 +104,8 @@ def create_config(service, conf_name):
     #Don't judge this code
     user_name  = input("User name : ")
     campus  = input("Campus : CPT/JHB : ")
+
+    calendars_days = int(input("Days limit: "))
     while not exist:
         calendar = input("Calendar: ")
         for cal in calendars:
@@ -112,45 +113,12 @@ def create_config(service, conf_name):
                 exist = True
                 
     configparser['user_info'] = {}
-
+    configparser['user_info']['days'] = calendars_days
     configparser['user_info']['username'] = user_name.lower()
     configparser['user_info']['campus'] = campus.lower()
     configparser['user_info']['calendar'] = calendar.lower()
-    print(store_dir + conf_name)
+
     with open(store_dir + "/" +  conf_name, 'w') as config:
         configparser.write(config)
 
 create_config(service, "clinic.conf")
-
-# service = user_login()
-# print(service)
-# calendars_result = service.calendarList().list().execute()
-# calendars = calendars_result.get('items', [])
-# print(calendars_result)
-# print(calendars)
-
-
-
-
-# create_event("Code", "cpt", "Love isn't real, fight me :)", '2020-11-26', '13:00', 'sshandu', service)
-# create_event("Code", "cpt", "Love does exist Hiranya :)", '2020-11-15', '15:00', 'sshandu', service)
-
-
-# ans = input("Enter calendar: ")
-# exist = False
-
-# while not exist:
-#     ans = input("Enter calendar: ")
-#     for cal in calendars:
-#         if ans.lower() == cal['summary'].lower():
-#             exist = True
-#             print(cal['id'])
-# print(calendars[4]['summary'])
-
-
-# create_config()
-# calendar = service.calendars().get(calendarId='primary').execute()
-
-# print(calendars_result)
-
-
