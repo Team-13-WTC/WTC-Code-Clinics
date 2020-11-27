@@ -104,7 +104,6 @@ def create_config(service, conf_name):
     #Don't judge this code
     user_name  = input("User name : ")
     campus  = input("Campus : CPT/JHB : ")
-
     calendars_days = int(input("Days limit: "))
     while not exist:
         calendar = input("Calendar: ")
