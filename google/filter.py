@@ -12,7 +12,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from pprint import pprint
 import json
-from google import calendar
+from google import calendar_api
 from configuration import read_config as config
 
 
@@ -31,38 +31,38 @@ def filter_for_codeclinic():
     '''
 
 
-    events = calendar.get_calendar().get('items', [])
+    events = calendar_api.get_calendar().get('items', [])
     code_clinic_events = filter(lambda x: 'Code Clinic' in x['summary'], events)
     return list(code_clinic_events)
 
 
-def filter_for_open_slots():
+def filter_for_booking():
     '''
     Filters out events and shows only slots open for booking by checking for events without 'attendees' and removing events where user has volunteered
     :return: list of open_slots
     '''
     username = config.retrieve_variable('username')
     code_clinic_events = filter_for_codeclinic()
-    open_slots = filter(lambda x: 'attendees' not in x and username not in x['creator']['email'], code_clinic_events)
+    open_slots = filter(lambda x: len(x['attendees']) == 1 and username not in x['creator']['email'], code_clinic_events)
     # open_slots = filter(lambda x: len(x['attendees']) == 1, code_clinic_events)
     
     return list(open_slots)
 
 
-def filter_empty_volunteer_slots():
+def filter_my_empty_volunteer_slots():
     '''
     Filters out code_clinic_events to show specific volunteer slots where no one has booked
     :return: list of not_booked
     '''
     username = config.retrieve_variable('username')
     code_clinic_events = filter_for_codeclinic()
-    not_booked = filter(lambda x: 'attendees' not in x and username in x['creator']['email'], code_clinic_events)
+    not_booked = filter(lambda x: len(x['attendees']) == 1 and username in x['creator']['email'], code_clinic_events)
     # not_booked = filter(lambda x: len(x['attendees']) == 1 and user_name in x['attendees'][0]['email'], code_clinic_events)
 
     return list(not_booked)
 
 
-def filter_empty_patient_slots():
+def filter_my_patient_slots():
     '''
     Filters out code_clinic_events events for events where user's patient slots are extracted
     :return: list of events where you are the patient
@@ -70,40 +70,28 @@ def filter_empty_patient_slots():
 
     username = config.retrieve_variable('username')
     code_clinic_events = filter_for_codeclinic()
-    patients_booked_slots = filter(lambda x: 'attendees' in x and username in x['attendees'][0]['email'] and username not in x['creator']['email'], code_clinic_events)
+    patients_booked_slots = filter(lambda x: len(x['attendees']) == 2 and username in x['attendees'][1]['email'] and username not in x['creator']['email'], code_clinic_events)
 
     return list(patients_booked_slots)
 
 
-def filter_available_creation(date_to_volunteer):
+def filter_available_creation(date_to_volunteer, time):
     '''
     Assesses which 30min slots may be seleted by volunteer on a specified date_to_volunteer
     :return: list of open_slots
     '''
 
-    username = config.retrieve_variable('username')
-    code_clinic_events = filter_for_codeclinic()
+    all_slot_dictionary =  [ '08:30',  '09:00', '09:30',  '10:00', '10:30',  '11:00',
+                        '11:30',  '12:00',  '12:30',  '13:00', '13:30',  '14:00',
+                         '14:30', '15:00',  '15:30',  '16:00',  '16:30', '17:00']
+    
+    available_creation = calendar_api.freebusy(date_to_volunteer, time)
+    
+    if available_creation or time not in all_slot_dictionary:
+        return False
+    else:
+        return True
 
-    all_slot_dictionary = { 1 : '08:30', 2 : '09:00', 3 : '09:30', 4 : '10:00', 5 : '10:30', 6 : '11:00',
-                        7 : '11:30', 8 : '12:00', 9 : '12:30', 10 : '13:00', 11 : '13:30', 12 : '14:00',
-                        13 : '14:30', 14 : '15:00', 15 : '15:30', 16 : '16:00', 17 : '16:30', 18 : '17:00'}
-
-    open_slot = all_slot_dictionary.copy()
-
-    for event in code_clinic_events:
-
-        if 'attendees' not in event:
-            if username in event['creator']['email']:
-                for key in all_slot_dictionary:
-                    if date_to_volunteer in event['start']['dateTime'] and all_slot_dictionary[key] in event['start']['dateTime']:
-                        open_slot.pop(key)
-       
-        elif len(event['attendees']) == 1:
-            if username in event['attendees'][0]['email']:
-                    for key in all_slot_dictionary:
-                        if date_to_volunteer in event['start']['dateTime'] and all_slot_dictionary[key] in event['start']['dateTime']:
-                            open_slot.pop(key)
-    return open_slot
 
 
 def list_of_users_clinic_events():
@@ -139,3 +127,5 @@ def list_of_users_clinic_events():
         print(start, event['summary'])
 
     return volunteered_events, booked_events
+
+print(filter_for_booking())

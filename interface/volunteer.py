@@ -5,7 +5,7 @@ sys.path.insert(0, USER_PATHS + "/")
 
 # import user
 from google import filter
-from google import calendar
+from google import calendar_api
 
 
 def create_slot(command, command_list):
@@ -42,7 +42,7 @@ def create_slot(command, command_list):
             print("Location: Johanesburg campus 3.")
         print("Time: " + str(time))
         print("Description: " + description + ".")
-        calendar.create_event(description, date, open_slot[time])
+        calendar_api.create_event(description, date, open_slot[time])
         print("This session has ended...")
         return
     elif proceed == 'n':
@@ -135,7 +135,7 @@ def cancel_bookings(command, command_list):
 
     if deleting == 'y':
         print("You have confirmed you want to delete a slot.")
-        list_not_booked = filter.filter_empty_volunteer_slots()
+        list_not_booked = filter.filter_my_empty_volunteer_slots()
 
         if not list_not_booked:
             print("You have no elegible slots to cancel.")
@@ -153,7 +153,7 @@ def cancel_bookings(command, command_list):
             count = count + 1
 
         deleted_slot = input("Which slot do you want to delete: ")
-        calendar.delete_event(cancel_dict[int(deleted_slot)])
+        calendar_api.delete_event(cancel_dict[int(deleted_slot)])
 
         # print("Thank you for submitting, you have canceled your booking on: ")
         

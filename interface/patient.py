@@ -6,7 +6,7 @@ sys.path.insert(0, USER_PATHS + "/")
 # import user
 #from vol_interface import volunteer
 from google import filter
-from google import calendar
+from google import calendar_api
 
 
 def book_slot(command, command_list):
@@ -24,7 +24,7 @@ def book_slot(command, command_list):
         #Need this from the api
         # user_name = 'Fille'
 
-        open_slot = filter.filter_for_open_slots()
+        open_slot = filter.filter_for_booking()
         book_dict = {}
         count = 1
 
@@ -37,7 +37,7 @@ def book_slot(command, command_list):
         time = int(input("Choose a time slot. ")) #timing() 
         #location = user_location()
         description = user_description()
-        calendar.add_attendee(book_dict[int(time)], description)
+        calendar_api.add_attendee(book_dict[int(time)], description)
         #title = "Title: CODE CLINIC PATIENT"
 
         # print("Thank you for booking a slot. Here are the details")
@@ -142,7 +142,7 @@ def cancel_bookings(command, command_list):
 
     if deleting == 'y':
         print("You have confirmed you want to delete a slot.")
-        list_not_booked = filter.filter_empty_patient_slots()
+        list_not_booked = filter.filter_my_patient_slots()
 
         if not list_not_booked:
             print("You have no elegible slots to cancel.")
@@ -160,7 +160,7 @@ def cancel_bookings(command, command_list):
             count = count + 1
 
         deleted_slot = input("Which slot do you want to delete: ")
-        calendar.remove_attendee(cancel_dict[int(deleted_slot)])
+        calendar_api.remove_attendee(cancel_dict[int(deleted_slot)])
 
         # print("Thank you for submitting, you have canceled your booking on: ")
         

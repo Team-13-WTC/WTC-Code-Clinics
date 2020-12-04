@@ -1,4 +1,6 @@
+
 from __future__ import print_function
+import os, sys
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -7,12 +9,27 @@ import datetime
 import os.path
 import pickle
 import json
+
+USER_PATHS = os.path.abspath(os.path.join(os.path.dirname( __file__ ), "../"))
+sys.path.insert(0, USER_PATHS + "/")
+
 from configuration import read_config as config
+
+
+def make_datetime_from_string(string):
+    """
+    Creates a dattime object form a given string
+    Parameter:  string (yyy-mm-ddTHH:MM:00+0200)
+    Returns:    datetime object
+    """
+    return datetime.datetime.strptime(string, "%Y-%m-%dT%H:%M:%S%z")
 
 
 def populate_credentials():
     """
-    TODO: write this docstring
+    Creates, validates and writes user credentials (Google account) to the token.pickle file.
+    Parameter:  None
+    Returns:    service to be used with API calls
     """
     
     # If modifying these scopes, delete the file token.pickle.
@@ -41,8 +58,9 @@ def populate_credentials():
                 pickle.dump(creds, token)
 
     service = build('calendar', 'v3', credentials = creds)
-        
+
     return service
+
 
 def get_calendar():
     """
@@ -68,7 +86,7 @@ def get_calendar():
                     orderBy = 'startTime').execute()
 
     # store data in json
-    with open('calendar_pull.json', 'w') as outfile:
+    with open('google/calendar_pull.json', 'w') as outfile:
         json.dump(events_result, outfile, indent=4)
 
     return events_result
@@ -107,7 +125,10 @@ def create_event(speciality, date, time):
     'end': {
         'dateTime': end_time,
         'timeZone': 'Africa/Johannesburg',
-    }
+    },
+    'attendees':[
+        {'email': f"{username}@student.wethinkcode.co.za"},
+    ]
     }
 
     # call API to create event
@@ -132,6 +153,7 @@ def add_attendee(id, support_needed):
 
     # update attendee
     event['attendees'] = [
+        event['attendees'][0],
         {'email': f"{username}@student.wethinkcode.co.za"},
     ]
 
@@ -157,6 +179,7 @@ def remove_attendee(id):
 
     # update attendee
     event['attendees'] = [
+        event['attendees'][0],
     ]
 
     # revert description to volunteer's speciality
@@ -179,13 +202,48 @@ def delete_event(id):
     service.events().delete(calendarId=calendar, eventId=id, sendUpdates = 'all').execute()
 
 
+def freebusy(date, time):
+    """
+    Sends API request to retrieve times that the calendar contains events between two time ranges
+    Parameter:  date (yyy-mm-dd), time (HH:MM)
+    Returns:    list of times that the calendar contains events
+    """
+
+    service = populate_credentials()
+    username = config.retrieve_variable('username')
+
+    start_filter = (make_datetime_from_string(f'{date}T{time}:00+0200')).isoformat()
+    end_filter = (make_datetime_from_string(f'{date}T{time}:00+0200')+timedelta(minutes = 30)).isoformat()
+
+    busy_body = {
+  "timeMin": start_filter,
+  "timeMax": end_filter,
+  "timeZone": 'Africa/Johannesburg',
+  "items": [
+    {
+      "id": f'{username}@student.wethinkcode.co.za'
+    }
+  ]
+}
+    print(start_filter)
+    results = service.freebusy().query(body=busy_body).execute()
+
+    busy_dict = results[u'calendars']
+
+    busy_list = busy_dict[f'{username}@student.wethinkcode.co.za']['busy']
+
+    return busy_list
+
+
+    
 """
 mock function calls
 """
 
 # get_calendar()
-# create_event("anything goes", '2020-12-11', '10:00')
-# add_attendee("e2lfek90lahil4ip1bt41efe54", 'my TDD broke')
-# remove_attendee("e2lfek90lahil4ip1bt41efe54")
-# delete_event("e2lfek90lahil4ip1bt41efe54")
+# print(freebusy('2020-12-11', '10:00'))
+# create_event("anything goes", '2020-12-15', '08:00')
+# add_attendee("sjfh15a9pvc8fnu0s8re49imgk", 'my TDD broke')
+# remove_attendee("sjfh15a9pvc8fnu0s8re49imgk")
+# delete_event("d29jdh52tuv6g9r3b9f92b0dqk")
 
