@@ -120,6 +120,13 @@ def create_config(service, conf_name):
 
     with open(store_dir + "/" +  conf_name, 'w') as config:
         configparser.write(config)
+        
+def retrieve_variable(variable):
+
+    config_object = ConfigParser()
+    config_object.read("configuration/clinic.conf")
+    userinfo = config_object["user_info"]    
+    return userinfo[variable]
 
 def update_config_date(days):
     global config_path
