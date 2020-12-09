@@ -1,112 +1,52 @@
-# This is Maitar code, this gives the direct path for files not in the current folder (instead of cd.. which brings you out of a folder, python doent do that).
-# from interface.volunteer_interface.volunteer import check_bookings
-import os, sys
-
 # USER_PATHS = os.path.abspath(os.path.join(os.path.dirname( __file__ ), "../"))
 # sys.path.insert(0, USER_PATHS + "/")
 
 # Imports needed for interface to work
-from interface import volunteer
-from interface import patient
-from google import filter
+from interface import operations
+from interface import validations
 
 
-
-def patient_or_volunteer(command, command_list):
-    """
-    Determine's if the patient is a volenteer. This should be in another function as both user_interface and volenteer_interface use it.
-    """
-    # we need to keep a variable saying if the user is a volunteer or a patient
-    user_type = input("Are you a patient or volunteer? ")
-
-    if user_type.lower() == "patient":
-        user_type = 'patient'
-    elif user_type.lower() == 'volunteer':
-        user_type = 'volunteer'
-    else:
-        print("Sorry that is not a possible type.")
-        patient_or_volunteer(command, command_list)
-    return user_type
-
-
-def validate(command, command_list):
+def split_operation(operation, args):
     """
     Checks if the command is valid.
+    args.volunteer, args.book, args.delete, args.cancel, args.retrieve
     """
 
-    user_input = sys.argv[1]
+    if operation == 0:
+        if validations.date_is_valid(args.date) and validations.time_is_valid(args.time) and validations.description_created(args.description):
+            operations.create_slot(args.date, args.time, args.description)
 
-    command = 0
+    elif operation == 1:
+        if not args.id:
+            operations.book_slot(args.id, args.description)
 
-    if user_input.lower() == 'help':
-        command = 'help'
-        user_help(command, command_list)
-    elif user_input.lower() == 'create':
-        command = 'create'
-        user_type = volunteer
-        volunteer.create_slot(command, command_list)
-    elif user_input.lower() == 'book':
-        command = 'book'
-        user_type = patient
-        patient.book_slot(command, command_list)
-    elif user_input.lower() == 'check':
-        command = 'check'
-        user_type = patient_or_volunteer(command, command_list)
-        if user_type.lower() == 'patient':
-            patient.check_bookings(command, command_list)
-        elif user_type.lower() == 'volunteer':
-            volunteer.check_bookings(command, command_list)
-    elif user_input.lower() == 'cancel':
-        command = 'cancel'
-        user_type = patient_or_volunteer(command, command_list)
-        if user_type.lower() == 'patient':
-            patient.cancel_bookings(command, command_list)
-        elif user_type.lower() == 'volunteer':
-            volunteer.cancel_bookings(command, command_list)
-    elif not user_input.lower() in command_list:
-        print("Sorry that is an invalid command.")
-        print("This session has ended...")
-        return False
+        elif validations.description_created(args.description):
+            operations.book_slot(args.id, args.description)
+
+    elif operation == 2:
+        operations.delete_slot(args.id)
+
+    elif operation == 3:
+        operations.cancel_booking(args.id)
+        
+    elif operation == 4:
+        operations.retrieve_calendar()
 
 
+def only_one_operation(args):
+
+    operations = [args.volunteer, args.book, args.delete, args.cancel, args.retrieve]
+
+    if operations.count(True) > 1:
+        print('Only one operation at a time')
+
+    elif operations.count(True) == 0:
+        print('Valid operations are --volunteer --book --delete --cancel --retrieve')
+
+    else:
+        return operations.index(True)
+
+
+def start(args):
     
-def user_help(command, command_list):
-    """
-    This prints out all the available commands in the terminal
-    """
-    print("You can:")
-    print(" > Book - As a patient you can book a slot.")
-    print(" > Cancel - As either a patient or a volenteer you can cancel a slot you have booked or created")
-    print(" > Create - As a volenteer you can create a slot.")
-    print(" > Check - As patient you can check what slots you have signed up for, as a volenteer you can check what slots you have created")
-    print(" > Help - Displays all the help commands.")
-    print(" > Off - Turns of the Code Clinic")
-    print("This session has ended...")
-    return False
-
-
-def start():
-    command_list = ['book', 'cancel', 'check', 'create', 'help', 'refresh']
-    command = 0
-    validate(command, command_list)
-
-
-
-def check_bookings(command, command_list):
-    """
-    As patient you can check what slots you have signed up for, as a volenteer you can check what slots you have created.
-    """
-
-    filter.list_of_users_clinic_events()
-
-
-#     # print("Loading.. ")
-#     # print("You have these slots booked: ")
-#     # print("Here are your booked slots: ")
-
-
-#     # print("Here are your empty slots: ")
-
-
-#     # print("This session has ended...")
-#     # return 
+    split_operation(only_one_operation(args), args)

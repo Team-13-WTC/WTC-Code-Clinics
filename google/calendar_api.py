@@ -9,16 +9,17 @@ import datetime
 import os.path
 import pickle
 import json
+from google import mailer
 
 USER_PATHS = os.path.abspath(os.path.join(os.path.dirname( __file__ ), "../"))
 sys.path.insert(0, USER_PATHS + "/")
 
-from configuration import read_config as config
+from configuration import create_configuration as config
 
 
 def make_datetime_from_string(string):
     """
-    Creates a dattime object form a given string
+    Creates a datetime object form a given string
     Parameter:  string (yyy-mm-ddTHH:MM:00+0200)
     Returns:    datetime object
     """
@@ -65,12 +66,13 @@ def populate_credentials():
 def get_calendar():
     """
     Retrieves Code Clinic calendar and stores the events in a JSON file
-    Parameter:  int - How many days in advance to retrieve the events
-    Returns:    nothing
+    Parameter:  nothing
+    Returns:    Dictionary of events on the calendar
     """
-    days_to_get = int(config.retrieve_variable('days_to_get'))
-    calendar = config.retrieve_variable('calendar')
 
+    # assign variables stored in the user's config file
+    days_to_get = int(config.retrieve_variable('days_to_get'))    
+    calendar = config.retrieve_variable('calendar')
     service = populate_credentials()
 
     # set start and end time of events to get
@@ -95,14 +97,13 @@ def get_calendar():
 def create_event(speciality, date, time):
     """
     Sends API request to create an event
-    Parameter:  title: name of event
-                campus: Where the volunteer is from
-                speciality: what volunteer can help with
+    Parameter:  speciality: what volunteer can help with
                 date: when event should be made
                 time: what time event should be made
-                username: username of volunteer
-    Returns:    link to the event
+    Returns:    Nothing
     """
+
+    # assign variables stored in the user's config file
     location = config.retrieve_variable('campus')
     username = config.retrieve_variable('username')
     calendar = config.retrieve_variable('calendar')
@@ -137,13 +138,13 @@ def create_event(speciality, date, time):
 
 def add_attendee(id, support_needed):
     """
-    Sends API request to add an attendee to an event
+    Sends API request to add an attendee to an event and notify volunteer of the booking
     Parameter:  id: event identifier
-                username: username of attendee to be added
                 support_needed: what user needs help with
     Returns:    link to the event
     """
 
+    # assign variables stored in the user's config file
     username = config.retrieve_variable('username')
     service = populate_credentials()
     calendar = config.retrieve_variable('calendar')
@@ -163,14 +164,19 @@ def add_attendee(id, support_needed):
     # API call to send updated information
     service.events().update(calendarId=calendar, eventId=event['id'], body=event, sendUpdates = 'all').execute()
 
+    # call function to mail the volunteer
+    mailer.booked_event(username, event)
+
 
 def remove_attendee(id):
     """
     Sends API request to remove an attendee from an event
     Parameter:  id: event identifier
-    Returns:    link to the event
+    Returns:    nothing
     """
-   
+
+    # assign variables stored in the user's config file
+    username = config.retrieve_variable('username')   
     calendar = config.retrieve_variable('calendar')
     service = populate_credentials()
 
@@ -188,6 +194,9 @@ def remove_attendee(id):
     # API call to send updated information
     service.events().update(calendarId=calendar, eventId=event['id'], body=event, sendUpdates = 'all').execute()
 
+    # call function to mail the volunteer
+    mailer.cancelled_event(username, event)
+
 
 def delete_event(id):
     """
@@ -196,9 +205,11 @@ def delete_event(id):
     Returns:    nothing
     """
 
+    # assign variables stored in the user's config file
     calendar = config.retrieve_variable('calendar')
     service = populate_credentials()
 
+    # API call to send updated information
     service.events().delete(calendarId=calendar, eventId=id, sendUpdates = 'all').execute()
 
 
@@ -209,12 +220,15 @@ def freebusy(date, time):
     Returns:    list of times that the calendar contains events
     """
 
+    # assign variables stored in the user's config file
     service = populate_credentials()
     username = config.retrieve_variable('username')
 
+    # add 30 minutes to the start time
     start_filter = (make_datetime_from_string(f'{date}T{time}:00+0200')).isoformat()
     end_filter = (make_datetime_from_string(f'{date}T{time}:00+0200')+timedelta(minutes = 30)).isoformat()
 
+    # create body to be used by Freebusy request
     busy_body = {
   "timeMin": start_filter,
   "timeMax": end_filter,
@@ -225,9 +239,10 @@ def freebusy(date, time):
     }
   ]
 }
-    print(start_filter)
+    # API call to retrieve busy information
     results = service.freebusy().query(body=busy_body).execute()
 
+    # refine returned date to only have list of busy times
     busy_dict = results[u'calendars']
 
     busy_list = busy_dict[f'{username}@student.wethinkcode.co.za']['busy']

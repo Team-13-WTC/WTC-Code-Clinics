@@ -13,7 +13,7 @@ from google.auth.transport.requests import Request
 from pprint import pprint
 import json
 from google import calendar_api
-from configuration import read_config as config
+from configuration import create_configuration as config
 
 
 def read_file(file_name):
@@ -81,13 +81,11 @@ def filter_available_creation(date_to_volunteer, time):
     :return: list of open_slots
     '''
 
-    all_slot_dictionary =  [ '08:30',  '09:00', '09:30',  '10:00', '10:30',  '11:00',
-                        '11:30',  '12:00',  '12:30',  '13:00', '13:30',  '14:00',
-                         '14:30', '15:00',  '15:30',  '16:00',  '16:30', '17:00']
+    
     
     available_creation = calendar_api.freebusy(date_to_volunteer, time)
     
-    if available_creation or time not in all_slot_dictionary:
+    if available_creation:
         return False
     else:
         return True
@@ -106,26 +104,13 @@ def list_of_users_clinic_events():
     booked_events = []
 
     
-    for all_users_events in code_clinic_events:
-        if username in all_users_events['creator']['email']:
-            volunteered_events.append(all_users_events)
+    for event in code_clinic_events:
+        if username in event['creator']['email']:
+            volunteered_events.append(event)
             
-        if 'attendees' in all_users_events and username not in all_users_events['creator']['email']:
-            for attendee in all_users_events['attendees']:
+        else:
+            for attendee in event['attendees']:
                 if username in attendee['email']:
-                    booked_events.append(all_users_events)
+                    booked_events.append(event)
     
-    # print(len(volunteered_events))
-    print("Here are the events you have volunteered for:")
-    for event in volunteered_events:
-        start = event['start'].get('dateTime', event['start'].get('date'))
-        print(start, event['summary'])
-    # print(len(booked_events))
-    print('Here is a list of events you booked to get some help:')
-    for event in booked_events:
-        start = event['start'].get('dateTime', event['start'].get('date'))
-        print(start, event['summary'])
-
     return volunteered_events, booked_events
-
-print(filter_for_booking())
