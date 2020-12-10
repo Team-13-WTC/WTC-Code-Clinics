@@ -42,7 +42,7 @@ def only_one_operation(args):
         print('Only one operation at a time')
 
     elif operations.count(True) == 0:
-        print('Valid operations are --volunteer --book --delete --cancel --retrieve')
+        print('Valid operations are --volunteer --book --delete --cancel --retrieve --update')
 
     else:
         return operations.index(True)

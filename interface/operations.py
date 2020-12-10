@@ -1,9 +1,10 @@
-# import os, sys
-# USER_PATHS = os.path.abspath(os.path.join(os.path.dirname( __file__ ), "../"))
-# sys.path.insert(0, USER_PATHS + "/")
+import os, sys
+USER_PATHS = os.path.abspath(os.path.join(os.path.dirname( __file__ ), "../"))
+sys.path.insert(0, USER_PATHS + "/")
 from google import filter
 from google import calendar_api
 from interface import pretty_lib as nice
+from configuration.create_configuration import full_config
 
 def create_slot(date, time, description):
     """
@@ -43,10 +44,7 @@ def book_slot(id, description):
 
     elif not id:
         print('These are the slots available to book:')
-
-        for event in open_slot:
-            start = event['start'].get('dateTime', event['start'].get('date'))
-            print(start, event['summary'], event['id'])
+        nice.display_slots(open_slot, "AVAILABLE SLOTS")
 
     else:
         print("Invalid ID used.")
@@ -74,10 +72,7 @@ def delete_slot(id):
 
     elif not id:
         print('These are your volunteered slots to delete:')
-
-        for event in list_not_booked:
-            start = event['start'].get('dateTime', event['start'].get('date'))
-            print(start, event['summary'], event['id'])
+        nice.display_volunteerd(list_not_booked, "VOLUNTEERD SLOTS")
 
     else:
         print("Invalid ID used.")
@@ -104,15 +99,10 @@ def cancel_booking(id):
 
     elif not id:
         print('These are your booked slots to cancel:')
-
-        for event in list_of_booked:
-            start = event['start'].get('dateTime', event['start'].get('date'))
-            print(start, event['summary'], event['id'])
+        nice.display_slots(list_of_booked, "BOOKED SLOTS")
 
     else:
         print("Invalid ID used.")
-
-
 
 def retrieve_calendar():
     """
@@ -123,13 +113,24 @@ def retrieve_calendar():
 
     # print(len(volunteered_events))
     print("Here are the events you have volunteered for:")
-    nice.display_slots(volunteered_events , "SLOTS")
+    nice.display_slots(volunteered_events , "VOLUNTEERD SLOTS")
     
 
     # print(len(booked_events))
     print()
     print('Here is a list of events you booked to get some help:')
-    nice.display_slots(booked_events, "BOOKED")
+    nice.display_booked_slots(booked_events, "BOOKED")
+
+def update_config_date(days):
+
+    config_object = ConfigParser()
+    config_object.read(full_config)
+
+    config_object["user_info"]['days'] = days
+
+    with open(full_config, 'w') as update:
+        config_object.write(update)
+        
 
 # You have not volunteered for anything.
 

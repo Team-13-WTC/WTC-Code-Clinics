@@ -1,5 +1,11 @@
 from argparse import ArgumentParser
 from interface import run_clinic
+import os.path as path
+from configuration import create_configuration
+
+# # print(full_config)
+# if not path.exists(create_configuration.full_config):
+#     create_configuration.setup_config()
 
 
 def create_arguments():
@@ -26,6 +32,8 @@ def create_arguments():
     ap.add_argument('-e', '--description', nargs='?', dest= "description", help = 'Add some info')
 
     ap.add_argument('-id', nargs='?', dest= "id", help = 'id of event')
+
+    ap.add_argument('-days', nargs='?', dest= "days", help = 'give it a number of days.')
 
     args = ap.parse_args()
 

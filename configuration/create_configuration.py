@@ -17,10 +17,13 @@ SCOPES = ['https://www.googleapis.com/auth/calendar.readonly', 'https://www.goog
 configparser = ConfigParser()
 
 home_dir = str(Path.home()) # $HOME dir of current user
-conf_dir = ".clinic_config" #the configuration folder name
+conf_dir = ".clinic_config/" #the configuration folder name
 store_dir = ""
 conf_name = "clinic.conf"
-config_path = ".clinic_config/clinic.conf"
+config_path = "./clinic.conf"
+full_config = home_dir + "/" + conf_dir + conf_name
+config_home_dir = home_dir + "/" + conf_dir
+
 
 def user_login():
     """
@@ -35,7 +38,7 @@ def user_login():
     # created automatically when the authorization flow completes for the first
     # time.
     if os.path.exists('token.pickle'):
-        with open(home_dir + '/token.pickle', 'rb') as token:
+        with open(config_home_dir + '/token.pickle', 'rb') as token:
             creds = pickle.load(token)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
@@ -46,7 +49,7 @@ def user_login():
                 'google/credentials.json', SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
-        with open(home_dir + '/token.pickle', 'wb') as token:
+        with open(config_home_dir + '/token.pickle', 'wb') as token:
             pickle.dump(creds, token)
 
     service = build('calendar', 'v3', credentials=creds)
@@ -61,11 +64,11 @@ def temp_config_dir(config_dir):
      :home_dir will be where the conf_dir will be stored
     
     """
-    # config_dir = ".clinic_config"
 
     #for the testing 
+    print(home_dir + "/" + conf_dir)
     if not path.exists(home_dir + config_dir):
-        os.system("mkdir " + home_dir + config_dir)
+        os.system("mkdir " + home_dir + "/" + config_dir)
     return config_dir
 
 
@@ -114,7 +117,7 @@ def create_config(service, conf_name):
     configparser['user_info']['calendar'] = calendar_id
     configparser['user_info']['days_to_get'] = calendars_days
 
-    with open(store_dir + "/" +  conf_name, 'w') as config:
+    with open(full_config, 'w') as config:
         configparser.write(config)
         
 def retrieve_variable(variable):
@@ -134,11 +137,9 @@ def update_config_date(days):
 
     with open(config_path, 'w') as update:
         config_object.write(update)
-        
-# if not path.exists(conf_dir):
-#     store_dir = temp_config_dir(conf_dir)
-#     service = user_login()
-#     create_config(service, conf_name)
 
-print(home_dir + "/blap")
-temp_config_dir("/blap")
+def setup_config():       
+    if not path.exists(conf_dir):
+        store_dir = temp_config_dir(conf_dir)
+        service = user_login()
+        create_config(service, conf_name)
