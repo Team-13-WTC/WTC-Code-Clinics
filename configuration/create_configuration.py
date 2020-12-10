@@ -16,7 +16,7 @@ SCOPES = ['https://www.googleapis.com/auth/calendar.readonly', 'https://www.goog
 
 configparser = ConfigParser()
 
-home_dir = str(Path.home()) + "/" # $HOME dir of current user
+home_dir = str(Path.home()) # $HOME dir of current user
 conf_dir = ".clinic_config" #the configuration folder name
 store_dir = ""
 conf_name = "clinic.conf"
@@ -35,7 +35,7 @@ def user_login():
     # created automatically when the authorization flow completes for the first
     # time.
     if os.path.exists('token.pickle'):
-        with open('token.pickle', 'rb') as token:
+        with open(home_dir + '/token.pickle', 'rb') as token:
             creds = pickle.load(token)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
@@ -46,14 +46,14 @@ def user_login():
                 'google/credentials.json', SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
-        with open('token.pickle', 'wb') as token:
+        with open(home_dir + '/token.pickle', 'wb') as token:
             pickle.dump(creds, token)
 
     service = build('calendar', 'v3', credentials=creds)
 
     return service
 
-def temp_config_dir():
+def temp_config_dir(config_dir):
     """
      Creates the temp configuration directory.
      We'll use this one for now.
@@ -61,20 +61,16 @@ def temp_config_dir():
      :home_dir will be where the conf_dir will be stored
     
     """
-    config_dir = ".clinic_config"
-
+    # config_dir = ".clinic_config"
 
     #for the testing 
-    if not path.exists(config_dir):
-        subprocess.run(['mkdir', conf_dir])
-    if path.exists('token.pickle'):
-        subprocess.run(['mv', 'token.pickle', config_dir])
-
+    if not path.exists(home_dir + config_dir):
+        os.system("mkdir " + home_dir + config_dir)
     return config_dir
 
 
 def create_config_dir():
-    """
+    """W
     This will create the hidden directory on the users home directory.
     :home_dir is the users home dir, you run `echo $HOME` to see this
     :config_dir is the hidden directory name
@@ -113,10 +109,10 @@ def create_config(service, conf_name):
                 exist = True
 
     configparser['user_info'] = {}
-    configparser['user_info']['days'] = calendars_days
     configparser['user_info']['username'] = user_name.lower()
     configparser['user_info']['campus'] = campus.lower()
     configparser['user_info']['calendar'] = calendar_id
+    configparser['user_info']['days_to_get'] = calendars_days
 
     with open(store_dir + "/" +  conf_name, 'w') as config:
         configparser.write(config)
@@ -139,7 +135,10 @@ def update_config_date(days):
     with open(config_path, 'w') as update:
         config_object.write(update)
         
-if not path.exists(conf_dir):
-    store_dir = temp_config_dir()
-    service = user_login()
-    create_config(service, conf_name)
+# if not path.exists(conf_dir):
+#     store_dir = temp_config_dir(conf_dir)
+#     service = user_login()
+#     create_config(service, conf_name)
+
+print(home_dir + "/blap")
+temp_config_dir("/blap")

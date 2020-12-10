@@ -3,6 +3,7 @@
 # sys.path.insert(0, USER_PATHS + "/")
 from google import filter
 from google import calendar_api
+from interface import pretty_lib as nice
 
 def create_slot(date, time, description):
     """
@@ -122,16 +123,13 @@ def retrieve_calendar():
 
     # print(len(volunteered_events))
     print("Here are the events you have volunteered for:")
-    for event in volunteered_events:
-        start = event['start'].get('dateTime', event['start'].get('date'))
-        print(start, event['summary'])
+    nice.display_slots(volunteered_events , "SLOTS")
+    
 
     # print(len(booked_events))
     print()
     print('Here is a list of events you booked to get some help:')
-    for event in booked_events:
-        start = event['start'].get('dateTime', event['start'].get('date'))
-        print(start, event['summary'])
+    nice.display_slots(booked_events, "BOOKED")
 
 # You have not volunteered for anything.
 
