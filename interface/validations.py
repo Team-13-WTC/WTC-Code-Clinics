@@ -5,14 +5,14 @@ import re
 def make_datetime_from_string(string):
     """
     Creates a dattime object form a given string
-    Parameter:  string (yyy-mm-ddTHH:MM:00+0200)
+    Parameter:  string (yyy-mm-dd)
     Returns:    datetime object
     """
     return datetime.datetime.strptime(string, "%Y-%m-%d")
 
 def date_correct_format(date):
 
-    if not re.search("\d\d\d\d-\d\d-\d\d", date):
+    if not re.fullmatch("\d\d\d\d-\d\d-\d\d", date):
         return False
 
     return True
@@ -72,22 +72,22 @@ def date_is_valid(date):
     """
     
     if not date_correct_format(date):
-        print('incorrect date format')
+        print('Incorrect date format. yyyy-mm-dd')
         return False
     
     elif not date_valid_day(date):
-        print('Invalid month/day combination')
+        print('That is not a real date.')
         return False
 
     elif not date_within_30_days(date):
-        print('Selected date not within 30 days')
+        print('Selected date not within 30 days from today.')
         return False
 
     return True
 
 def time_correct_format(time):
 
-    if not re.search("\d\d:\d\d", time):
+    if not re.fullmatch("\d\d:\d\d", time):
         return False
 
     return True
@@ -107,11 +107,11 @@ def time_valid_slot(time):
 def time_is_valid(time):
 
     if not time_correct_format(time):
-        print('incorrect time format')
+        print('Incorrect time format. HH:MM')
         return False
 
     if not time_valid_slot(time):
-        print('incorrect time slot')
+        print('Incorrect time slot. Time slots are half-hourly from 08h:30 till 17:00.')
         return False
 
     return True
@@ -119,7 +119,7 @@ def time_is_valid(time):
 def description_created(description):
 
     if not description:
-        print('Please add a description')
+        print('Please add a description eg. -e "Add description here"')
         return False
 
     return True

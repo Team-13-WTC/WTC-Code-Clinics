@@ -33,6 +33,7 @@ def split_operation(operation, args):
         operations.retrieve_calendar()
 
 
+
 def only_one_operation(args):
 
     operations = [args.volunteer, args.book, args.delete, args.cancel, args.retrieve]

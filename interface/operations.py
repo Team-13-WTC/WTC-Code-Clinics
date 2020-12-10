@@ -8,19 +8,16 @@ def create_slot(date, time, description):
     """
     As patient you can check what slots you have signed up for, as a volenteer you can check what slots you have created.
     """
-
-    if not date or not time or not description:
-        print("Need more info")
     
-    elif filter.filter_available_creation(date, time):
+    if filter.filter_available_creation(date, time):
         calendar_api.create_event(description, date, time)
-        print("Thank you for creating a slot. Here are the details")
+        print("Thank you for creating a slot. Here are the details:")
         print("Date: " + str(date))
         print("Time: " + str(time))
         print("Description: " + description + ".")
 
     else:
-        print("busy or incorrect time")
+        print("This date and time conflicts with another event on your calendar.")
 
 
 def book_slot(id, description):
@@ -41,16 +38,17 @@ def book_slot(id, description):
 
     if id and id in to_book_list:
         calendar_api.add_attendee(id, description)
+        print(f"Thank you for booking a slot with {id}")
 
     elif not id:
-        print('These are the slots available to book')
+        print('These are the slots available to book:')
 
         for event in open_slot:
             start = event['start'].get('dateTime', event['start'].get('date'))
             print(start, event['summary'], event['id'])
 
     else:
-        print("Invalid ID used")
+        print("Invalid ID used.")
 
 
 
@@ -74,14 +72,14 @@ def delete_slot(id):
         calendar_api.delete_event(id)
 
     elif not id:
-        print('These are your volunteered slots to delete')
+        print('These are your volunteered slots to delete:')
 
         for event in list_not_booked:
             start = event['start'].get('dateTime', event['start'].get('date'))
             print(start, event['summary'], event['id'])
 
     else:
-        print("Invalid ID used")
+        print("Invalid ID used.")
 
 
 def cancel_booking(id):
@@ -104,14 +102,14 @@ def cancel_booking(id):
         calendar_api.remove_attendee(id)
 
     elif not id:
-        print('These are your booked slots to cancel')
+        print('These are your booked slots to cancel:')
 
         for event in list_of_booked:
             start = event['start'].get('dateTime', event['start'].get('date'))
             print(start, event['summary'], event['id'])
 
     else:
-        print("Invalid ID used")
+        print("Invalid ID used.")
 
 
 
@@ -129,7 +127,12 @@ def retrieve_calendar():
         print(start, event['summary'])
 
     # print(len(booked_events))
+    print()
     print('Here is a list of events you booked to get some help:')
     for event in booked_events:
         start = event['start'].get('dateTime', event['start'].get('date'))
         print(start, event['summary'])
+
+# You have not volunteered for anything.
+
+# You have no booked slots.
