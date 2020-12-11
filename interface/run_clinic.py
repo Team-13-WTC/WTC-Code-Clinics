@@ -1,15 +1,14 @@
 # USER_PATHS = os.path.abspath(os.path.join(os.path.dirname( __file__ ), "../"))
 # sys.path.insert(0, USER_PATHS + "/")
-
-# Imports needed for interface to work
 from interface import operations
 from interface import validations
 
 
 def split_operation(operation, args):
     """
-    Checks if the command is valid.
-    args.volunteer, args.book, args.delete, args.cancel, args.retrieve
+    Based on operation selected by user, calls apropriate validations and operation with required parameters
+    Parameter:  operation (int), args (full list of posible arguments)
+    Returns:    Nothing
     """
 
     if operation == 0:
@@ -33,8 +32,12 @@ def split_operation(operation, args):
         operations.retrieve_calendar()
 
 
-
 def only_one_operation(args):
+    """
+    Verifies that user only specified to run one operation
+    Parameter:  args (full list of posible arguments)
+    Returns:    int (index position of True operation if only one selected) or Nothing
+    """
 
     operations = [args.volunteer, args.book, args.delete, args.cancel, args.retrieve]
 

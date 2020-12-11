@@ -2,6 +2,7 @@ from itertools import chain
 import datetime
 import re
 
+
 def make_datetime_from_string(string):
     """
     Creates a dattime object form a given string
@@ -10,26 +11,39 @@ def make_datetime_from_string(string):
     """
     return datetime.datetime.strptime(string, "%Y-%m-%d")
 
+
 def date_correct_format(date):
+    """
+    Checks if a date string conforms to the yyyy-mm-dd format
+    Parameter:  string (yyy-mm-dd)
+    Returns:    True or False
+    """
 
     if not re.fullmatch("\d\d\d\d-\d\d-\d\d", date):
         return False
 
     return True
 
-def date_valid_day(date):
 
-    # The months with 31 days to see if the date is valid
+def date_valid_day(date):
+    """
+    Checks if a specific day and month is valid
+    Parameter:  string (yyy-mm-dd)
+    Returns:    True or False
+    """
+
+    # The months with 31 days
     days_31 = ['01', '03', '05', '07', '08', '10', '12']
 
-    # The months with 30 days to see if the date is valid
+    # The months with 30 days
     days_30 = ['04', '06', '09', '11']
 
-    # Seperates feburaruy cause it has 28 days
+    # Special case for February
     exception_days = ['02']
 
     date = date.split('-')
 
+    # Check for vaild day ranges
     if date[1] not in chain(days_30, days_31, exception_days):
         return False
 
@@ -49,15 +63,19 @@ def date_valid_day(date):
 
 
 def date_within_30_days(date):
+    """
+    Checks if a given day is within 30 days of the the current date
+    Parameter:  string (yyy-mm-dd)
+    Returns:    True or False
+    """
 
+    # set current time and time to verify
     current_time = datetime.datetime.utcnow()
-
     future_time = make_datetime_from_string(date)
 
+    # calculate diference in seconds and then days
     time_difference = current_time - future_time
-
     duration_in_s = time_difference.total_seconds()
-
     days = divmod(duration_in_s, 86400)[0]
     
     if -30 <= days <= 0:
@@ -68,7 +86,9 @@ def date_within_30_days(date):
 
 def date_is_valid(date):
     """
-    This is the date the user wants to book a new slot.
+    Call various validation functions to determine if given date string is valid
+    Parameter:  string (yyy-mm-dd)
+    Returns:    True or False
     """
     
     if not date_correct_format(date):
@@ -85,14 +105,26 @@ def date_is_valid(date):
 
     return True
 
+
 def time_correct_format(time):
+    """
+    Checks if a time string conforms to the HH:MM format
+    Parameter:  string (HH:MM)
+    Returns:    True or False
+    """
 
     if not re.fullmatch("\d\d:\d\d", time):
         return False
 
     return True
 
+
 def time_valid_slot(time):
+    """
+    Checks if a time string falls on a valid time slot
+    Parameter:  string (HH:MM)
+    Returns:    True or False
+    """
 
     valid_time_slot =  ['08:30', '09:00', '09:30', '10:00', '10:30', '11:00',
                         '11:30', '12:00', '12:30', '13:00', '13:30', '14:00',
@@ -105,6 +137,11 @@ def time_valid_slot(time):
 
     
 def time_is_valid(time):
+    """
+    Call various validation functions to determine if given time string is valid
+    Parameter:  string (yyy-mm-dd)
+    Returns:    True or False
+    """
 
     if not time_correct_format(time):
         print('Incorrect time format. HH:MM')
@@ -116,7 +153,13 @@ def time_is_valid(time):
 
     return True
 
+
 def description_created(description):
+    """
+    Check if a description was given
+    Parameter:  string (description)
+    Returns:    True or False
+    """
 
     if not description:
         print('Please add a description eg. -e "Add description here"')

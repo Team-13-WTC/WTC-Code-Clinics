@@ -4,7 +4,9 @@ sys.path.insert(0, USER_PATHS + "/")
 from google import filter
 from google import calendar_api
 from interface import pretty_lib as nice
+from configparser import ConfigParser
 from configuration.create_configuration import full_config
+
 
 def create_slot(date, time, description):
     """
@@ -48,7 +50,6 @@ def book_slot(id, description):
 
     else:
         print("Invalid ID used.")
-
 
 
 def delete_slot(id):
@@ -104,6 +105,7 @@ def cancel_booking(id):
     else:
         print("Invalid ID used.")
 
+
 def retrieve_calendar():
     """
     As patient you can check what slots you have signed up for, as a volenteer you can check what slots you have created.
@@ -111,15 +113,20 @@ def retrieve_calendar():
 
     volunteered_events, booked_events = filter.list_of_users_clinic_events()
 
-    # print(len(volunteered_events))
-    print("Here are the events you have volunteered for:")
-    nice.display_slots(volunteered_events , "VOLUNTEERD SLOTS")
+    if volunteered_events:
+        print("Here are the events you have volunteered for:")
+        nice.display_slots(volunteered_events , "VOLUNTEERD SLOTS")
+    else:
+        print("You have not volunteered slots.")
     
 
-    # print(len(booked_events))
-    print()
-    print('Here is a list of events you booked to get some help:')
-    nice.display_booked_slots(booked_events, "BOOKED")
+    if booked_events:
+        print()
+        print('Here is a list of events you booked to get some help:')
+        nice.display_booked_slots(booked_events, "BOOKED")
+    else:
+        print("You have no booked slots.")
+
 
 def update_config_date(days):
 
@@ -130,8 +137,3 @@ def update_config_date(days):
 
     with open(full_config, 'w') as update:
         config_object.write(update)
-        
-
-# You have not volunteered for anything.
-
-# You have no booked slots.
