@@ -49,7 +49,20 @@ def split_operation(operation, args):
     elif operation == 10:
         operations.get_more_help_delete()
 
+    elif operation == 11:
+        operations.retrieve_personal_cal()
 
+    elif operation == 12:
+        if validations.time_is_valid(args.days):
+            operations.update_config_date(args.days)
+    
+    elif operation == 13:
+        operations.get_more_help_personal()
+
+    elif operation == 14:
+        operations.get_more_help_change_days()
+
+    
 def only_one_operation(args):
     """
     Verifies that user only specified to run one operation
@@ -57,7 +70,7 @@ def only_one_operation(args):
     Returns:    int (index position of True operation if only one selected) or Nothing
     """
 
-    operations = [args.volunteer, args.book, args.delete, args.cancel, args.retrieve, args.help, args.hv, args.hb, args.hr, args.hc, args.hd]
+    operations = [args.volunteer, args.book, args.delete, args.cancel, args.retrieve, args.help, args.hv, args.hb, args.hr, args.hc, args.hd, args.personal, args.update, args.hp, args.hu]
 
     if operations.count(True) > 1:
         print('Only one operation at a time')

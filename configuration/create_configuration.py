@@ -23,6 +23,7 @@ conf_name = "clinic.conf"
 config_path = "./clinic.conf"
 full_config = home_dir + "/" + conf_dir + conf_name
 config_home_dir = home_dir + "/" + conf_dir
+service = ''
 
 
 def user_login():
@@ -31,13 +32,11 @@ def user_login():
     :Returns the api servive object
     """
 
-    global home_dir, config_dir
-
     creds = None
     # The file token.pickle stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
-    if os.path.exists('token.pickle'):
+    if os.path.exists(config_home_dir + '/token.pickle'):
         with open(config_home_dir + '/token.pickle', 'rb') as token:
             creds = pickle.load(token)
     # If there are no (valid) credentials available, let the user log in.
@@ -48,6 +47,7 @@ def user_login():
             flow = InstalledAppFlow.from_client_secrets_file(
                 'google/credentials.json', SCOPES)
             creds = flow.run_local_server(port=0)
+            print("Configuration created successfully.")
         # Save the credentials for the next run
         with open(config_home_dir + '/token.pickle', 'wb') as token:
             pickle.dump(creds, token)
@@ -123,7 +123,7 @@ def create_config(service, conf_name):
 def retrieve_variable(variable):
 
     config_object = ConfigParser()
-    config_object.read("configuration/clinic.conf")
+    config_object.read(full_config)
     userinfo = config_object["user_info"]    
     return userinfo[variable]
 
@@ -139,7 +139,7 @@ def update_config_date(days):
         config_object.write(update)
 
 def setup_config():       
-    if not path.exists(conf_dir):
-        store_dir = temp_config_dir(conf_dir)
+    if not path.exists(config_home_dir):
+        store_dir = temp_config_dir(config_home_dir)
         service = user_login()
         create_config(service, conf_name)

@@ -4,10 +4,6 @@ from interface import run_clinic
 import os.path as path
 from configuration import create_configuration
 
-# # print(full_config)
-# if not path.exists(create_configuration.full_config):
-#     create_configuration.setup_config()
-
 
 def create_arguments():
 
@@ -34,7 +30,9 @@ def create_arguments():
 
     ap.add_argument('-id', nargs='?', dest= "id", help = 'id of event')
 
-    ap.add_argument('-days', nargs='?', dest= "days", help = 'give it a number of days.')
+    ap.add_argument('-u', "--update", default = False, action = 'store_true', help = "give it number")
+
+    ap.add_argument('-days', nargs='?', dest= "days", help = 'HH:MM')
 
     ap.add_argument('-h', '--help', default = False, action = 'store_true', help = "Print help menu")
 
@@ -48,6 +46,11 @@ def create_arguments():
 
     ap.add_argument('-hd', default = False, action = 'store_true', help = "Print help delete menu")
 
+    ap.add_argument('-hp', default = False, action = 'store_true', help = "Personal calendar help")
+
+    ap.add_argument('-hu', default = False, action = 'store_true', help = "Change calendar days help")
+
+
     args = ap.parse_args()
 
     return args
@@ -55,6 +58,7 @@ def create_arguments():
 
 if __name__ == "__main__":
     
+    create_configuration.setup_config()
     run_clinic.start(create_arguments())
     
 #add extended help

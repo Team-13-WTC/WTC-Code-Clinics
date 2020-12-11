@@ -11,11 +11,11 @@ import pickle
 import json
 from google import mailer
 
+
 USER_PATHS = os.path.abspath(os.path.join(os.path.dirname( __file__ ), "../"))
 sys.path.insert(0, USER_PATHS + "/")
 
 from configuration import create_configuration as config
-
 
 def make_datetime_from_string(string):
     """
@@ -26,41 +26,26 @@ def make_datetime_from_string(string):
     return datetime.datetime.strptime(string, "%Y-%m-%dT%H:%M:%S%z")
 
 
-def populate_credentials():
+def get_personal_cal():
     """
-    Creates, validates and writes user credentials (Google account) to the token.pickle file.
-    Parameter:  None
-    Returns:    service to be used with API calls
+    Retrieves Code Clinic calendar and stores the events in a JSON file
+    Parameter:  nothing
+    Returns:    Dictionary of events on the calendar
     """
-    
-    # If modifying these scopes, delete the file token.pickle.
-    SCOPES = ['https://www.googleapis.com/auth/calendar']
-
-    creds = None
-
-    # The file token.pickle stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
-    if os.path.exists('token.pickle'):
-        with open('token.pickle', 'rb') as token:
-            creds = pickle.load(token)
-
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'google/credentials.json', SCOPES)
-            creds = flow.run_local_server(port=0)
-
-        # Save the credentials for the next run
-            with open('token.pickle', 'wb') as token:
-                pickle.dump(creds, token)
-
-    service = build('calendar', 'v3', credentials = creds)
-
-    return service
+    # assign variables stored in the user's config file
+    days_to_get = int(config.retrieve_variable('days_to_get'))    
+    service = config.user_login()
+    # set start and end time of events to get
+    start_filter = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+    end_filter = (datetime.datetime.utcnow()+timedelta(days = days_to_get)).isoformat() + 'Z'
+    # Call the Calendar API
+    events_result = service.events().list(calendarId = 'primary', 
+                    timeMin = start_filter, 
+                    timeMax = end_filter, 
+                    singleEvents = True,                              
+                    orderBy = 'startTime').execute()
+    my_events = events_result.get('items', [])
+    return my_events
 
 
 def get_calendar():
@@ -73,7 +58,7 @@ def get_calendar():
     # assign variables stored in the user's config file
     days_to_get = int(config.retrieve_variable('days_to_get'))    
     calendar = config.retrieve_variable('calendar')
-    service = populate_credentials()
+    service = config.user_login()
 
     # set start and end time of events to get
     start_filter = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
@@ -108,7 +93,7 @@ def create_event(speciality, date, time):
     username = config.retrieve_variable('username')
     calendar = config.retrieve_variable('calendar')
 
-    service = populate_credentials()
+    service = config.user_login()
 
     # add 30 minutes to the start time
     end_time = datetime.datetime.strptime(f"{date}{time}", '%Y-%m-%d%H:%M') + timedelta(minutes = 30)
@@ -146,7 +131,7 @@ def add_attendee(id, support_needed):
 
     # assign variables stored in the user's config file
     username = config.retrieve_variable('username')
-    service = populate_credentials()
+    service = config.user_login()
     calendar = config.retrieve_variable('calendar')
 
     # First retrieve the event from the API.
@@ -178,7 +163,7 @@ def remove_attendee(id):
     # assign variables stored in the user's config file
     username = config.retrieve_variable('username')   
     calendar = config.retrieve_variable('calendar')
-    service = populate_credentials()
+    service = config.user_login()
 
     # First retrieve the event from the API.
     event = service.events().get(calendarId=calendar, eventId=id).execute()
@@ -207,7 +192,7 @@ def delete_event(id):
 
     # assign variables stored in the user's config file
     calendar = config.retrieve_variable('calendar')
-    service = populate_credentials()
+    service = config.user_login()
 
     # API call to send updated information
     service.events().delete(calendarId=calendar, eventId=id, sendUpdates = 'all').execute()
@@ -221,7 +206,7 @@ def freebusy(date, time):
     """
 
     # assign variables stored in the user's config file
-    service = populate_credentials()
+    service = config.user_login()
     username = config.retrieve_variable('username')
 
     # add 30 minutes to the start time

@@ -133,10 +133,12 @@ def update_config_date(days):
     config_object = ConfigParser()
     config_object.read(full_config)
 
-    config_object["user_info"]['days'] = days
+    config_object["user_info"]['days_to_get'] = days
 
     with open(full_config, 'w') as update:
         config_object.write(update)
+
+    print(f"Amount of days to retrieve has been updated to {days}")
 
 def get_help():
     start_bold = "\033[1m"
@@ -149,18 +151,34 @@ def get_help():
 
     -v or --volunteer -date "yyyy-mm-dd" -time "HH:MM" -e "enter description here"
     -b or --book -id "xxx" -e "enter description here"
-    -r or --retrieve
     -c or --cancel -id "xxx"
     -d or --delete -id "xxx"
+    -r or --retrieve
+    -p or --personal
+    -u -days "enter a number here"
     -h or --help: Command displays all commands available to the code-clinic booking system.
         
     *For detailed information on what each command does, just add the single letter flag to -h.
     e.g for more help on:
     -v --> wtc-clinic -hv
     -b --> wtc-clinic -hb
-    -r --> wtc-clinic -hr
     -c --> wtc-clinic -hc
     -d --> wtc-clinic -hd
+    -r --> wtc-clinic -hr
+    -p --> wtc-clinic -hp
+    -u --> wtc-clinic -hu
+    """)
+
+
+def get_more_help_change_days():
+    print("""
+------------------------------------------------------------------------------------------
+    >> -u -days:
+    The change days command allows you to alter the number of days you wish to work with
+    on your calendars.
+
+    Eg: -u -days 10
+-----------------------------------------------------------------------------------------
     """)
 
 
@@ -218,6 +236,17 @@ def get_more_help_retrieve():
     """)
 
 
+def get_more_help_personal():
+    print("""
+------------------------------------------------------------------------------------------
+    >> -p or --personal:
+    The personal command displays all your personal calendar events.
+
+    Eg: -p
+-----------------------------------------------------------------------------------------
+    """)
+
+
 def get_more_help_cancel():
     print("""
 -----------------------------------------------------------------------------------------
@@ -254,3 +283,12 @@ def get_more_help_delete():
      Eg: -d -id 4i3ngbd4ghj...
 -----------------------------------------------------------------------------------------
     """)
+
+
+def retrieve_personal_cal():
+    """
+    As user you can check your personal calendar events
+    """
+    personal_events = calendar_api.get_personal_cal()
+    print("Here are the events in your primary calendar:")
+    nice.display_personal(personal_events, "PERSONAL")

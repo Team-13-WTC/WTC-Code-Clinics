@@ -166,3 +166,52 @@ def description_created(description):
         return False
 
     return True
+
+
+def valid_number_format(days):
+    """
+    Checks if a day string conforms to the \d\d format
+    Parameter:  string (yyy-mm-dd)
+    Returns:    True or False
+    """
+
+    if not re.fullmatch("\d\d", days) and not re.fullmatch("\d", days):
+        return False
+
+    if not days.isdigit():
+        return False
+
+    if 0 >= int(days) > 99:
+        return False
+
+    return True
+
+def days_created(days):
+    """
+    Check if amount of days were given
+    Parameter:  string (days)
+    Returns:    True or False
+    """
+
+    if not days:
+        return False
+
+    return True
+
+
+def time_is_valid(days):
+    """
+    Call various validation functions to determine if given days string is valid
+    Parameter:  string (\d\d)
+    Returns:    True or False
+    """
+
+    if not days_created(days):
+        print('Please add amount of days eg. -days "Number between 0 and 99"')
+        return False
+
+    if not valid_number_format(days):
+        print('Incorrect days format. Number between 0 and 99')
+        return False
+
+    return True
