@@ -12,8 +12,8 @@ def get_slots(data):
     event_id = data['id']
     description = data['description'] #specialty
     creator = list(data['creator'].values())[0] #volunteer's email
-    start = list(data['start'].values())[0] #print with spaces
-    end = list(data['end'].values())[0]
+    start = list(data['start'].values())[0].replace("T", " ")[0:16] #print with spaces
+    end = list(data['end'].values())[0][11:16]
     return f"[b]ID: {event_id}\n[turquoise2]{creator}\n[green]{start} [b][white]| [green]{end}\n[deep_sky_blue3]{description}"
 
 def get_volunteerd(data):
@@ -26,8 +26,8 @@ def get_volunteerd(data):
     event_id = data['id']
     description = data['description'] #specialty
     creator = list(data['attendees'].values())[0] #if attendee present creator > attendee 
-    start = list(data['start'].values())[0] #print with spaces
-    end = list(data['end'].values())[0]
+    start = list(data['start'].values())[0].replace("T", " ")[0:16] #print with spaces
+    end = list(data['end'].values())[0][11:16]
     return f"[b]ID: {event_id}\n[turquoise2]{creator}\n[green]{start}  [b][white]| [green]{end}\n[deep_sky_blue3]{description}"
 
 def get_booked_slots(data):
@@ -39,8 +39,9 @@ def get_booked_slots(data):
     event_id = data['id']
     description = data['description'] #specialty
     creator = list(data['attendees'][0].values())[0] #if attendee present creator > attendee 
-    start = list(data['start'].values())[0] #print with spaces
-    end = list(data['end'].values())[0]
+    start = (list(data['start'].values())[0]).replace("T", " ")[0:16] #print with spaces
+    end = list(data['end'].values())[0][11:16]
+    
     return f"[b]ID: {event_id}\n[turquoise2]{creator}\n[green]{start}  [b][white]| [green]{end}\n[deep_sky_blue3]{description}"
 
 
