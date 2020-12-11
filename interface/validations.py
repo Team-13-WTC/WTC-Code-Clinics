@@ -199,7 +199,7 @@ def days_created(days):
     return True
 
 
-def time_is_valid(days):
+def days_are_valid(days):
     """
     Call various validation functions to determine if given days string is valid
     Parameter:  string (\d\d)

@@ -12,8 +12,11 @@ def split_operation(operation, args):
     """
 
     if operation == 0:
-        if validations.date_is_valid(args.date) and validations.time_is_valid(args.time) and validations.description_created(args.description):
-            operations.create_slot(args.date, args.time, args.description)
+        if args.date and args.time and args.description:
+            if validations.date_is_valid(args.date) and validations.time_is_valid(args.time) and validations.description_created(args.description):
+                operations.create_slot(args.date, args.time, args.description)
+        else:
+            print('See -hv, needed arguments are -date -time -e')
 
     elif operation == 1:
         if not args.id:
@@ -53,7 +56,7 @@ def split_operation(operation, args):
         operations.retrieve_personal_cal()
 
     elif operation == 12:
-        if validations.time_is_valid(args.days):
+        if validations.days_are_valid(args.days):
             operations.update_config_date(args.days)
     
     elif operation == 13:

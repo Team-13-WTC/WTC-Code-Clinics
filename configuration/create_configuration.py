@@ -36,8 +36,8 @@ def user_login():
     # The file token.pickle stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
-    if os.path.exists(config_home_dir + '/token.pickle'):
-        with open(config_home_dir + '/token.pickle', 'rb') as token:
+    if os.path.exists(config_home_dir + 'token.pickle'):
+        with open(config_home_dir + 'token.pickle', 'rb') as token:
             creds = pickle.load(token)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
@@ -68,7 +68,7 @@ def temp_config_dir(config_dir):
     #for the testing 
     print(home_dir + "/" + conf_dir)
     if not path.exists(home_dir + config_dir):
-        os.system("mkdir " + home_dir + "/" + config_dir)
+        os.system("mkdir " + config_home_dir)
     return config_dir
 
 
@@ -140,6 +140,6 @@ def update_config_date(days):
 
 def setup_config():       
     if not path.exists(config_home_dir):
-        store_dir = temp_config_dir(config_home_dir)
+        temp_config_dir(config_home_dir)
         service = user_login()
         create_config(service, conf_name)
