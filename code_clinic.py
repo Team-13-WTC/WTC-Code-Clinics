@@ -1,3 +1,4 @@
+import argparse
 from argparse import ArgumentParser
 from interface import run_clinic
 import os.path as path
@@ -11,7 +12,7 @@ from configuration import create_configuration
 def create_arguments():
 
     
-    ap = ArgumentParser()
+    ap = argparse.ArgumentParser(add_help=False)
 
     ap.add_argument('-p', '--personal', default = False, action = 'store_true', help = "Allows user to work on their personal calendar instead of the Code Clinic calendar")
 
@@ -34,6 +35,18 @@ def create_arguments():
     ap.add_argument('-id', nargs='?', dest= "id", help = 'id of event')
 
     ap.add_argument('-days', nargs='?', dest= "days", help = 'give it a number of days.')
+
+    ap.add_argument('-h', '--help', default = False, action = 'store_true', help = "Print help menu")
+
+    ap.add_argument('-hv', default = False, action = 'store_true', help = "Print help volunteer menu")
+
+    ap.add_argument('-hb', default = False, action = 'store_true', help = "Print help book menu")
+
+    ap.add_argument('-hr', default = False, action = 'store_true', help = "Print help retrieve menu")
+
+    ap.add_argument('-hc', default = False, action = 'store_true', help = "Print help cancel menu")
+
+    ap.add_argument('-hd', default = False, action = 'store_true', help = "Print help delete menu")
 
     args = ap.parse_args()
 

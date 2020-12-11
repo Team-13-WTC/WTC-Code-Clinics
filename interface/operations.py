@@ -137,3 +137,120 @@ def update_config_date(days):
 
     with open(full_config, 'w') as update:
         config_object.write(update)
+
+def get_help():
+    start_bold = "\033[1m"
+    end_bold = "\033[0;0m"
+
+    print(start_bold+ """
+    Here is a list of commands available to use that can be used in the 
+    code-clinic booking programme:
+    wtc-clinic [command arg]""" + end_bold +"""
+
+    -v or --volunteer -date "yyyy-mm-dd" -time "HH:MM" -e "enter description here"
+    -b or --book -id "xxx" -e "enter description here"
+    -r or --retrieve
+    -c or --cancel -id "xxx"
+    -d or --delete -id "xxx"
+    -h or --help: Command displays all commands available to the code-clinic booking system.
+        
+    *For detailed information on what each command does, just add the single letter flag to -h.
+    e.g for more help on:
+    -v --> wtc-clinic -hv
+    -b --> wtc-clinic -hb
+    -r --> wtc-clinic -hr
+    -c --> wtc-clinic -hc
+    -d --> wtc-clinic -hd
+    """)
+
+
+def get_more_help_volunteer():
+    print("""
+-----------------------------------------------------------------------------------------
+    >> -v or --volunteer:
+
+    When using the "volunteer" command you as the user will volunteer your time 
+    to assist a fellow WTC student at either the JHB or CT campus. This operation
+    will create an event on your personal WTC Google calendar. 
+    
+    ARGUMENTS FOR CLI:
+    The -v or --volunteer command requires 3 additional arguments:
+
+    -date --> With this flag enter the date you wish to volunteer for yyyy-mm-dd
+    -time --> With this flag enter the time you wish to volunteer for HH:MM
+        *note: Valid times are houly or half-hourly ONLY!
+        i.e. 08:00 and 13:30 are VALID, 08:15 and 13:50 are INVALID
+    -e --> Add a description to your event (mandatory)
+
+    Eg: -v -date 2020-12-18 -time 09:00 -e "I can't help you with recursion."
+-----------------------------------------------------------------------------------------
+    """)
+
+
+def get_more_help_book():
+    print("""
+-----------------------------------------------------------------------------------------
+    >> -b --book:
+    "wtc-clinic -b" will display slots that are available to you to book. Once 
+    you have selected the best suited slot by selecting the event id, the event
+    will be added to your personal WTC Google calendar. 
+
+    ARGUMENTS FOR CLI:
+
+    The -b or --book command requires 2 additional arguments:
+    -id --> With this flag copy the event id corresponding to the time of your choosing
+    -e --> Add a description to your booking (mandatory)
+    
+    Eg: -b -id 4i3ngbd4ghj... -e "I need help with lambdas."
+-----------------------------------------------------------------------------------------
+    """)
+
+
+def get_more_help_retrieve():
+    print("""
+------------------------------------------------------------------------------------------
+    >> -r --retrieve:
+    The retrieve command displays all your booked and volunteered for code clinic
+    events.
+
+    Eg: -r
+-----------------------------------------------------------------------------------------
+    """)
+
+
+def get_more_help_cancel():
+    print("""
+-----------------------------------------------------------------------------------------
+    >> -c or --cancel:
+    "wtc-clinic -c" will diplay a list of slots you have booked as a patient and
+    their corresponding event id's.
+
+     ARGUMENTS FOR CLI:
+
+    The -c or --cancel command requires 1 additional arguments:
+    -id --> With this flag copy the event id corresponding to the time of your choosing
+
+     Eg: -c -id 4i3ngbd4ghj...
+    
+    *note: If someone has already booked a slot you created as a volunteer you
+    will NOT be able to cancel the event.
+-----------------------------------------------------------------------------------------
+    """)
+
+
+def get_more_help_delete():
+    print("""
+-----------------------------------------------------------------------------------------
+    >> -d or --delete:
+    "wtc-clinic -d" will diplay a list of unbooked events you have created as a
+    volunteer and their corresponding event id's.  If someone has already booked
+    a slot you created as a volunteer you will NOT be able to cancel the event.
+
+    ARGUMENTS FOR CLI:
+
+    The -d or --delete command requires 1 additional arguments:
+    -id --> With this flag copy the event id corresponding to the time of your choosing
+
+     Eg: -d -id 4i3ngbd4ghj...
+-----------------------------------------------------------------------------------------
+    """)

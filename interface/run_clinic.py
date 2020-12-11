@@ -31,6 +31,24 @@ def split_operation(operation, args):
     elif operation == 4:
         operations.retrieve_calendar()
 
+    elif operation == 5:
+        operations.get_help()
+
+    elif operation == 6:
+        operations.get_more_help_volunteer()
+
+    elif operation == 7:
+        operations.get_more_help_book()
+    
+    elif operation == 8:
+        operations.get_more_help_retrieve()
+    
+    elif operation == 9:
+        operations.get_more_help_cancel()
+    
+    elif operation == 10:
+        operations.get_more_help_delete()
+
 
 def only_one_operation(args):
     """
@@ -39,7 +57,7 @@ def only_one_operation(args):
     Returns:    int (index position of True operation if only one selected) or Nothing
     """
 
-    operations = [args.volunteer, args.book, args.delete, args.cancel, args.retrieve]
+    operations = [args.volunteer, args.book, args.delete, args.cancel, args.retrieve, args.help, args.hv, args.hb, args.hr, args.hc, args.hd]
 
     if operations.count(True) > 1:
         print('Only one operation at a time')
