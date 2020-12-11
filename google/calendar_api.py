@@ -12,6 +12,7 @@ import json
 from google import mailer
 
 
+
 USER_PATHS = os.path.abspath(os.path.join(os.path.dirname( __file__ ), "../"))
 sys.path.insert(0, USER_PATHS + "/")
 
@@ -73,8 +74,12 @@ def get_calendar():
                     orderBy = 'startTime').execute()
 
     # store data in json
-    with open('google/calendar_pull.json', 'w') as outfile:
-        json.dump(events_result, outfile, indent=4)
+    if os.path.exists("google/calendar_pull.json"):
+        if config.check_calender_state("google/calendar_pull.json", config.user_login()):
+            pass
+        else:        
+            with open('google/calendar_pull.json', 'w') as outfile:
+                json.dump(events_result, outfile, indent=4)
 
     return events_result
 
