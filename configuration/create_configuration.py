@@ -13,13 +13,15 @@ from pathlib import Path
 import hashlib
 import json
 from typing import Dict, Any
+from interface import validations
 
 # If modifying these scopes, delete the file token.pickle.
-SCOPES = ['https://www.googleapis.com/auth/calendar.readonly', 'https://www.googleapis.com/auth/calendar']
+SCOPES = ['https://www.googleapis.com/auth/calendar.readonly', 
+'https://www.googleapis.com/auth/calendar']
 
 configparser = ConfigParser()
 
-home_dir = str(Path.home()) # $HOME dir of current user
+home_dir = str(Path.home())
 conf_dir = ".clinic_config/" #the configuration folder name
 store_dir = ""
 conf_name = "clinic.conf"
@@ -31,8 +33,9 @@ service = ''
 
 def user_login():
     """
-    :User Login
-    :Returns the api servive object
+    User Login- creates and/or stores user's account information and permits
+    access to Google Calendar API 
+    Return: the api servive object
     """
 
     creds = None
@@ -59,16 +62,15 @@ def user_login():
 
     return service
 
+
 def temp_config_dir(config_dir):
     """
-     Creates the temp configuration directory.
-     We'll use this one for now.
-     :conf_dir is the name of the config directory
-     :home_dir will be where the conf_dir will be stored
-    
+    Creates a temp configuration directory if one does not exist to be passed to
+    config setup
+    Parameter: config_dir - takes this in to check if it exists
+    Return: conf_dir
     """
-
-    #for the testing 
+ 
     print(home_dir + "/" + conf_dir)
     if not path.exists(home_dir + config_dir):
         os.system("mkdir " + config_home_dir)
@@ -76,12 +78,13 @@ def temp_config_dir(config_dir):
 
 
 def create_config_dir():
-    """W
-    This will create the hidden directory on the users home directory.
-    :home_dir is the users home dir, you run `echo $HOME` to see this
-    :config_dir is the hidden directory name
-    :the token.pickle is also moved to the hidden directory
     """
+    This will create the hidden directory on the users home directory. The 
+    token.pickle is also moved to the hidden directory
+    Parameter:home_dir is the users home dir, you run `echo $HOME` to see this
+    Parameter:config_dir is the hidden directory name
+    """
+
     global home_dir, config_dir
 
     if not path.exists(home_dir + conf_dir):
@@ -89,24 +92,30 @@ def create_config_dir():
     if path.exists('token.pickle'):
         subprocess.run(['mv', 'token.pickle', home_dir + conf_dir])
 
+
 def create_config(service, conf_name):
     """
-    Creates the configuration:
-    Stores : username, campus, secondary calendar
-    :The user must enter a valid calendar so we don't run into execution errors.
+    Writes to config file storing relevant user information - username, campus,
+    secondary calendar once only
+    Parameter: service
+    Parameter: conf_name
     """
     global store_dir
-
-    # store_dir = temp_config_dir()
 
     calendars_result = service.calendarList().list().execute()
     calendars = calendars_result.get('items', [])
     
     exist = False
-    #Don't judge this code
+
     user_name  = input("User name : ")
     campus  = input("Campus : CPT/JHB : ")
+
     calendars_days = input("Days limit: ")
+    #The user must enter a valid day so we don't run into execution errors
+    while not validations.days_are_valid(calendars_days):
+        calendars_days = input("Days limit: ")
+
+    #The user must enter a valid calendar so we don't run into execution errors
     while not exist:
         calendar = input("Calendar: ")
         for cal in calendars:
@@ -122,15 +131,27 @@ def create_config(service, conf_name):
 
     with open(full_config, 'w') as config:
         configparser.write(config)
-        
+
+
 def retrieve_variable(variable):
+    """
+    Extracts the appropriate parameter stored in config file, either cal_days,
+    user_name or no_cal_days
+    Parameter: variable -user_name, campus, calendars_days or calendar
+    Return: 
+    """
 
     config_object = ConfigParser()
     config_object.read(full_config)
     userinfo = config_object["user_info"]    
     return userinfo[variable]
 
+
 def update_config_date(days):
+    """
+    Updates calendar_days in config file and writes over old days
+    Parameter: days
+    """
     global config_path
 
     config_object = ConfigParser()
@@ -141,7 +162,13 @@ def update_config_date(days):
     with open(config_path, 'w') as update:
         config_object.write(update)
 
-def setup_config():       
+
+def setup_config():
+    """
+    Creates the hidden configuration directory in user' home directory and
+    initiates Google API connection
+    """
+
     if not path.exists(config_home_dir):
         temp_config_dir(config_home_dir)
         service = user_login()
@@ -150,10 +177,14 @@ def setup_config():
 
 def check_calender_state(system_calendar_file, service):
     """
-    This function will check if the calender data has been updated,
-    :It will md5 hash the requested json data and the json the file system
-    :After it gets the md5 hashes it will compare them. if the hashes are identical then the calender hasn't changed if they're different the calender has changed somehow
-    :Note : I think we could also use the Etag to check if the data has changed. 
+    This function will check if the calender data has been updated. It will md5
+    hash the requested json data and the json the file system. After it gets the
+    md5 hashes it will compare them. If the hashes are identical then the
+    calender hasn't changed if they're different the calender has changed.
+    Parameter: system_calendar - json file name where calendar info is stored
+    Parameter: API service object
+    Return: True if there were no changes to calendar over that specified time
+
     """
 
     requested_calendar = service.events().list(calendarId=retrieve_variable('calendar')).execute()
@@ -172,9 +203,11 @@ def check_calender_state(system_calendar_file, service):
 def dictionary_hash(json_data: Dict[str, Any]) -> str:
     """
     The json data saves as a dictinary so we'll md5 the dictionary.
-    :The -> tells the function to return a string
-    :dhash is an object, it holds the hash. initially it's empty but we give it the encoded json data.
-    :Hashlib returns the md5 hash in hexadecimal and we use hexdigest to make it ascii
+    The -> tells the function to return a string
+    Parameter: dhash is an object, it holds the hash. initially it's empty but
+    we give it the encoded json data.
+    Return: Hashlib returns the md5 hash in hexadecimal and we use hexdigest
+    to make it ascii
     """
     dhash = hashlib.md5()
 
