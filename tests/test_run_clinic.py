@@ -1,5 +1,5 @@
 import unittest
-from io import StringIO
+# from io import StringIO
 import io
 import sys
 from interface import run_clinic
@@ -40,9 +40,9 @@ class TestRunClinic(unittest.TestCase):
         cancel=False, date=None, delete=False, description=None, id=None, personal=False, retrieve=False, time=None, volunteer=False, help = False, update = True, days = False, hv= False, hb= False, hr= False, hc= False, hd= False, hp= False, hu= False)))
 
     def test_step2_test_no_operation(self):
-        self.assertEqual(None,run_clinic.only_one_operation(Namespace(book=False, 
+        self.assertEqual(5,run_clinic.only_one_operation(Namespace(book=False, 
         cancel=False, date=None, delete=False, description=None, id=None, personal=False, retrieve=False, time=None, volunteer=False, help = False, update = False, days = False, hv= False, hb= False, hr= False, hc= False, hd= False, hp= False, hu= False)))
        
     def test_step2_test_too_many_operation(self):
         self.assertEqual(None,run_clinic.only_one_operation(Namespace(book=False, 
-        cancel=False, date=None, delete=False, description=None, id=None, personal=False, retrieve=False, time=None, volunteer=False, help = False, update = False, days = False, hv= False, hb= False, hr= False, hc= False, hd= False, hp= False, hu= False)))
+        cancel=True, date=None, delete=False, description=None, id=None, personal=True, retrieve=False, time=None, volunteer=False, help = False, update = False, days = False, hv= False, hb= False, hr= False, hc= False, hd= False, hp= False, hu= False)))
