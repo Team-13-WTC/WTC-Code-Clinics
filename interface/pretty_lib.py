@@ -23,7 +23,7 @@ def get_volunteerd(data):
     """
 
     #add attendees if attendee greater than 1
-    event_id = data['etag']
+    event_id = data['id']
     description = data['description'] #specialty
     creator = list(data['attendees'][0].values())[0] #if attendee present creator > attendee 
     start = list(data['start'].values())[0].replace("T", " ")[0:16] #print with spaces
@@ -52,9 +52,10 @@ def get_personal(data):
     """
 
     creator = list(data['creator'].values())[0] #if attendee present creator > attendee 
+    summary = data['summary'] #title
     start = list(data['start'].values())[0].replace("T", " ")[0:16] #print with spaces
     end = list(data['end'].values())[0][11:16]
-    return f"[b][turquoise2]{creator}\n[green]{start}  [b][white]| [green]{end}"
+    return f"[b][white]{summary}\n[b][turquoise2]{creator}\n[green]{start}  [b][white]| [green]{end}"
 
 
 """

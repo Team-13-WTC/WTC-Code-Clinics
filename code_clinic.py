@@ -61,10 +61,5 @@ if __name__ == "__main__":
     create_configuration.setup_config()
     run_clinic.start(create_arguments())
     
-#add extended help
-#add argument for create config
 #sphe clean up create_config
-#melt delete service function and change to sphe's
-#add pretty print
-#Hiranya TDD Validations.py / run_clinic.py
 # change print('Valid operations are --volunteer --book --delete --cancel --retrieve') to help function call

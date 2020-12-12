@@ -60,3 +60,12 @@ class TestValidations(unittest.TestCase):
         self.assertTrue(validations.description_created('abc'))
         self.assertFalse(validations.description_created(''))
 
+    def test_valid_nbr_format(self):
+        self.assertTrue(validations.valid_number_format('30'))
+        self.assertFalse(validations.valid_number_format('-1'))
+        self.assertFalse(validations.valid_number_format('100'))
+
+    def test_days_created(self):
+        self.assertTrue(validations.days_created('30'))
+        self.assertFalse(validations.days_created(''))
+

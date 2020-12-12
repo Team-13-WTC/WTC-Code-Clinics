@@ -290,5 +290,8 @@ def retrieve_personal_cal():
     As user you can check your personal calendar events
     """
     personal_events = calendar_api.get_personal_cal()
-    print("Here are the events in your primary calendar:")
-    nice.display_personal(personal_events, "PERSONAL")
+    if personal_events:
+        print("Here are the events in your primary calendar:")
+        nice.display_personal(personal_events, "PERSONAL")
+    else:
+        print("There are no events to display.")
