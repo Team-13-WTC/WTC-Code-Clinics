@@ -1,19 +1,20 @@
-# USER_PATHS = os.path.abspath(os.path.join(os.path.dirname( __file__ ), "../"))
-# sys.path.insert(0, USER_PATHS + "/")
 from interface import operations
 from interface import validations
 
 
 def split_operation(operation, args):
     """
-    Based on operation selected by user, calls apropriate validations and operation with required parameters
+    Based on operation selected by user, calls apropriate validations and 
+    operation with required parameters
     Parameter:  operation (int), args (full list of posible arguments)
     Returns:    Nothing
     """
 
     if operation == 0:
         if args.date and args.time and args.description:
-            if validations.date_is_valid(args.date) and validations.time_is_valid(args.time) and validations.description_created(args.description):
+            if validations.date_is_valid(args.date) \
+                and validations.time_is_valid(args.time) \
+                and validations.description_created(args.description):
                 operations.create_slot(args.date, args.time, args.description)
         else:
             print('See -hv, needed arguments are -date -time -e')
@@ -65,15 +66,19 @@ def split_operation(operation, args):
     elif operation == 14:
         operations.get_more_help_change_days()
 
-    
+   
 def only_one_operation(args):
     """
     Verifies that user only specified to run one operation
     Parameter:  args (full list of posible arguments)
-    Returns:    int (index position of True operation if only one selected) or Nothing
+    Returns:    int (index position of True operation if only one selected) 
+                or Nothing
     """
 
-    operations = [args.volunteer, args.book, args.delete, args.cancel, args.retrieve, args.help, args.hv, args.hb, args.hr, args.hc, args.hd, args.personal, args.update, args.hp, args.hu]
+    operations = [args.volunteer, args.book, args.delete, args.cancel, 
+                    args.retrieve, args.help, args.hv, args.hb, args.hr, 
+                    args.hc, args.hd, args.personal, args.update, 
+                    args.hp, args.hu]
 
     if operations.count(True) > 1:
         print('Only one operation at a time')

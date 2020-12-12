@@ -9,6 +9,7 @@ def make_datetime_from_string(string):
     Parameter:  string (yyy-mm-dd)
     Returns:    datetime object
     """
+
     return datetime.datetime.strptime(string, "%Y-%m-%d")
 
 
@@ -53,10 +54,12 @@ def date_valid_day(date):
     elif date[1] in days_30 and not (int(date[2]) <= 30 and int(date[2]) > 0):
         return False
 
-    elif date[1] in exception_days and (int(date[0]) % 4 != 0) and not (int(date[2]) <= 28 and int(date[2]) > 0):
+    elif date[1] in exception_days and (int(date[0]) % 4 != 0) \
+            and not (int(date[2]) <= 28 and int(date[2]) > 0):
         return False
 
-    elif date[1] in exception_days and (int(date[0]) % 4 == 0) and not (int(date[2]) <= 29 and int(date[2]) > 0):
+    elif date[1] in exception_days and (int(date[0]) % 4 == 0) \
+            and not (int(date[2]) <= 29 and int(date[2]) > 0):
         return False
     
     return True
@@ -148,7 +151,8 @@ def time_is_valid(time):
         return False
 
     if not time_valid_slot(time):
-        print('Incorrect time slot. Time slots are half-hourly from 08h:30 till 17:00.')
+        print('Incorrect time slot. Time slots are half-hourly', end = '')
+        print('from 08h:30 till 17:00.')
         return False
 
     return True
@@ -185,6 +189,7 @@ def valid_number_format(days):
         return False
 
     return True
+
 
 def days_created(days):
     """
