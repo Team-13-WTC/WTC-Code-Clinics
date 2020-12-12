@@ -10,7 +10,10 @@ from configuration.create_configuration import full_config
 
 def create_slot(date, time, description):
     """
-    As patient you can check what slots you have signed up for, as a volenteer you can check what slots you have created.
+    As a user you can create a slot on your calendar for volunteering purposes.
+    Parameter: date
+    Parameter: time
+    Parameter: description of what the user can help with
     """
     
     if filter.filter_available_creation(date, time):
@@ -26,7 +29,10 @@ def create_slot(date, time, description):
 
 def book_slot(id, description):
     """
-    This func allows you to book a slot
+    This func allows you to book a patient slot if there are available volunteer
+    slots that have been created already
+    Parameter: event id
+    Parameter: description of what the user needs help with
     """
 
     open_slot = filter.filter_for_booking()
@@ -41,8 +47,9 @@ def book_slot(id, description):
         to_book_list.append(event['id'])
 
     if id and id in to_book_list:
+        volunteer = (event['creator']['email']).split('@')[0]
         calendar_api.add_attendee(id, description)
-        print(f"Thank you for booking a slot with {id}")
+        print(f"Thank you for booking a slot with {volunteer}")
 
     elif not id:
         print('These are the slots available to book:')
@@ -54,7 +61,11 @@ def book_slot(id, description):
 
 def delete_slot(id):
     """
-    As either a patient or a volenteer you can cancel a slot you have booked or created.
+    User can delete the slots they have created as a volunteer. Will not show
+    slots the user has created where another student (patient) has booked their
+    event.
+    Paramter: event id
+    Return: list of volunteer events user may delete with corresponding id's
     """
     
     list_not_booked = filter.filter_my_empty_volunteer_slots()
@@ -81,7 +92,9 @@ def delete_slot(id):
 
 def cancel_booking(id):
     """
-    As either a patient or a volenteer you can cancel a slot you have booked or created.
+    User can delete the slots they have booked as a patient
+    Paramter: event id
+    Return: list of patient events user may delete with corresponding id's
     """
 
     list_of_booked = filter.filter_my_patient_slots()
@@ -97,6 +110,8 @@ def cancel_booking(id):
 
     if id and id in cancel_list:
         calendar_api.remove_attendee(id)
+        volunteer = (event['creator']['email']).split('@')[0]
+        print(f"You have cancelled your booking with {volunteer} successfully.")
 
     elif not id:
         print('These are your booked slots to cancel:')
@@ -108,7 +123,7 @@ def cancel_booking(id):
 
 def retrieve_calendar():
     """
-    As patient you can check what slots you have signed up for, as a volenteer you can check what slots you have created.
+    User can view all their code clinic calendar events
     """
 
     volunteered_events, booked_events = filter.list_of_users_clinic_events()
@@ -129,6 +144,10 @@ def retrieve_calendar():
 
 
 def update_config_date(days):
+    """
+    Changes the no_of_calendar_days stored in config file
+    Paramter: days
+    """
 
     config_object = ConfigParser()
     config_object.read(full_config)
@@ -139,6 +158,19 @@ def update_config_date(days):
         config_object.write(update)
 
     print(f"Amount of days to retrieve has been updated to {days}")
+
+
+def retrieve_personal_cal():
+    """
+    User you can check their personal/primary calendar events
+    """
+    personal_events = calendar_api.get_personal_cal()
+    if personal_events:
+        print("Here are the events in your primary calendar:")
+        nice.display_personal(personal_events, "PERSONAL")
+    else:
+        print("There are no events to display.")
+
 
 def get_help():
     start_bold = "\033[1m"
@@ -156,9 +188,11 @@ def get_help():
     -r or --retrieve
     -p or --personal
     -u -days "enter a number here"
-    -h or --help: Command displays all commands available to the code-clinic booking system.
+    -h or --help: Command displays all commands available to the code-clinic 
+    booking system.
         
-    *For detailed information on what each command does, just add the single letter flag to -h.
+    *For detailed information on what each command does, just add the single 
+    letter flag to -h.
     e.g for more help on:
     -v --> wtc-clinic -hv
     -b --> wtc-clinic -hb
@@ -174,7 +208,8 @@ def get_more_help_change_days():
     print("""
 ------------------------------------------------------------------------------------------
     >> -u -days:
-    The change days command allows you to alter the number of days you wish to work with
+    The change days command allows you to alter the number of days you wish to
+    work with
     on your calendars.
 
     Eg: -u -days 10
@@ -216,7 +251,8 @@ def get_more_help_book():
     ARGUMENTS FOR CLI:
 
     The -b or --book command requires 2 additional arguments:
-    -id --> With this flag copy the event id corresponding to the time of your choosing
+    -id --> With this flag copy the event id corresponding to the time of your
+    choosing
     -e --> Add a description to your booking (mandatory)
     
     Eg: -b -id 4i3ngbd4ghj... -e "I need help with lambdas."
@@ -257,7 +293,8 @@ def get_more_help_cancel():
      ARGUMENTS FOR CLI:
 
     The -c or --cancel command requires 1 additional arguments:
-    -id --> With this flag copy the event id corresponding to the time of your choosing
+    -id --> With this flag copy the event id corresponding to the time of your
+    choosing
 
      Eg: -c -id 4i3ngbd4ghj...
     
@@ -278,20 +315,9 @@ def get_more_help_delete():
     ARGUMENTS FOR CLI:
 
     The -d or --delete command requires 1 additional arguments:
-    -id --> With this flag copy the event id corresponding to the time of your choosing
+    -id --> With this flag copy the event id corresponding to the time of your
+    choosing
 
      Eg: -d -id 4i3ngbd4ghj...
 -----------------------------------------------------------------------------------------
     """)
-
-
-def retrieve_personal_cal():
-    """
-    As user you can check your personal calendar events
-    """
-    personal_events = calendar_api.get_personal_cal()
-    if personal_events:
-        print("Here are the events in your primary calendar:")
-        nice.display_personal(personal_events, "PERSONAL")
-    else:
-        print("There are no events to display.")
