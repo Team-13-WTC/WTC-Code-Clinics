@@ -192,13 +192,13 @@ def get_help():
     *For detailed information on what each command does, just add the single 
     letter flag to -h.
     e.g for more help on:
-    -v --> wtc-clinic -hv
-    -b --> wtc-clinic -hb
-    -c --> wtc-clinic -hc
-    -d --> wtc-clinic -hd
-    -r --> wtc-clinic -hr
-    -p --> wtc-clinic -hp
-    -u --> wtc-clinic -hu
+    -v --> python3 code_clinic.py -hv
+    -b --> python3 code_clinic.py -hb
+    -c --> python3 code_clinic.py -hc
+    -d --> python3 code_clinic.py -hd
+    -r --> python3 code_clinic.py -hr
+    -p --> python3 code_clinic.py -hp
+    -u --> python3 code_clinic.py -hu
     """)
 
 
