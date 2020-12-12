@@ -2,21 +2,17 @@
 from __future__ import print_function
 import os, sys
 from googleapiclient.discovery import build
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
 from datetime import timedelta
 import datetime
 import os.path
-import pickle
 import json
-from google import mailer
-
-
 
 USER_PATHS = os.path.abspath(os.path.join(os.path.dirname( __file__ ), "../"))
 sys.path.insert(0, USER_PATHS + "/")
 
+from google import mailer
 from configuration import create_configuration as config
+
 
 def make_datetime_from_string(string):
     """
@@ -36,9 +32,11 @@ def get_personal_cal():
     # assign variables stored in the user's config file
     days_to_get = int(config.retrieve_variable('days_to_get'))    
     service = config.user_login()
+
     # set start and end time of events to get
-    start_filter = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
-    end_filter = (datetime.datetime.utcnow()+timedelta(days = days_to_get)).isoformat() + 'Z'
+    start_filter = datetime.datetime.utcnow().isoformat() + 'Z'
+    end_filter = (datetime.datetime.utcnow()+timedelta(days = days_to_get))
+    end_filter = end_filter.isoformat() + 'Z'
     # Call the Calendar API
     events_result = service.events().list(calendarId = 'primary', 
                     timeMin = start_filter, 
@@ -46,6 +44,7 @@ def get_personal_cal():
                     singleEvents = True,                              
                     orderBy = 'startTime').execute()
     my_events = events_result.get('items', [])
+
     return my_events
 
 
@@ -62,10 +61,10 @@ def get_calendar():
     service = config.user_login()
 
     # set start and end time of events to get
-    start_filter = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+    start_filter = datetime.datetime.utcnow().isoformat() + 'Z'
+    end_filter = (datetime.datetime.utcnow()+timedelta(days = days_to_get))
+    end_filter = end_filter.isoformat() + 'Z'
 
-    end_filter = (datetime.datetime.utcnow()+timedelta(days = days_to_get)).isoformat() + 'Z'
-    
     # Call the Calendar API
     events_result = service.events().list(calendarId = calendar, 
                     timeMin = start_filter, 
@@ -73,9 +72,10 @@ def get_calendar():
                     singleEvents = True,                              
                     orderBy = 'startTime').execute()
 
-    # store data in json
+    # store data in json if there is update information
     if os.path.exists("google/calendar_pull.json"):
-        if config.check_calender_state("google/calendar_pull.json", config.user_login()):
+        if config.check_calender_state("google/calendar_pull.json",\
+            config.user_login()):
             pass
         else:        
             with open('google/calendar_pull.json', 'w') as outfile:
@@ -97,11 +97,11 @@ def create_event(speciality, date, time):
     location = config.retrieve_variable('campus')
     username = config.retrieve_variable('username')
     calendar = config.retrieve_variable('calendar')
-
     service = config.user_login()
 
     # add 30 minutes to the start time
-    end_time = datetime.datetime.strptime(f"{date}{time}", '%Y-%m-%d%H:%M') + timedelta(minutes = 30)
+    end_time = datetime.datetime.strptime(f"{date}{time}", '%Y-%m-%d%H:%M')
+    end_time = end_time + timedelta(minutes = 30)
     end_time = (str(end_time)).replace(" ", "T") + "+02:00"
 
     # details for the event to be created
@@ -123,12 +123,14 @@ def create_event(speciality, date, time):
     }
 
     # call API to create event
-    event = service.events().insert(calendarId=calendar, body=event, sendUpdates = 'all').execute()
+    event = service.events().insert(calendarId=calendar, body=event, \
+            sendUpdates = 'all').execute()
 
 
 def add_attendee(id, support_needed):
     """
-    Sends API request to add an attendee to an event and notify volunteer of the booking
+    Sends API request to add an attendee to an event and notify the
+    volunteer of the booking
     Parameter:  id: event identifier
                 support_needed: what user needs help with
     Returns:    link to the event
@@ -152,7 +154,8 @@ def add_attendee(id, support_needed):
     event['description'] = f"{event['description']} - {support_needed}"
 
     # API call to send updated information
-    service.events().update(calendarId=calendar, eventId=event['id'], body=event, sendUpdates = 'all').execute()
+    service.events().update(calendarId=calendar, eventId=event['id'], \
+    body=event, sendUpdates = 'all').execute()
 
     # call function to mail the volunteer
     mailer.booked_event(username, event)
@@ -182,7 +185,8 @@ def remove_attendee(id):
     event['description'] = (event['description'].split(" -"))[0]
 
     # API call to send updated information
-    service.events().update(calendarId=calendar, eventId=event['id'], body=event, sendUpdates = 'all').execute()
+    service.events().update(calendarId=calendar, eventId=event['id'], \
+    body=event, sendUpdates = 'all').execute()
 
     # call function to mail the volunteer
     mailer.cancelled_event(username, event)
@@ -200,12 +204,14 @@ def delete_event(id):
     service = config.user_login()
 
     # API call to send updated information
-    service.events().delete(calendarId=calendar, eventId=id, sendUpdates = 'all').execute()
+    service.events().delete(calendarId=calendar, eventId=id, \
+    sendUpdates = 'all').execute()
 
 
 def freebusy(date, time):
     """
-    Sends API request to retrieve times that the calendar contains events between two time ranges
+    Sends API request to retrieve times that the calendar contains events 
+    between two time ranges
     Parameter:  date (yyy-mm-dd), time (HH:MM)
     Returns:    list of times that the calendar contains events
     """
@@ -214,9 +220,11 @@ def freebusy(date, time):
     service = config.user_login()
     username = config.retrieve_variable('username')
 
-    # add 30 minutes to the start time
-    start_filter = (make_datetime_from_string(f'{date}T{time}:00+0200')).isoformat()
-    end_filter = (make_datetime_from_string(f'{date}T{time}:00+0200')+timedelta(minutes = 30)).isoformat()
+    # set start time and add 30 minutes to the start time
+    start_filter = (make_datetime_from_string(f'{date}T{time}:00+0200'))
+    start_filter = start_filter.isoformat()
+    end_filter = make_datetime_from_string(f'{date}T{time}:00+0200')
+    end_filter = (end_filter + timedelta(minutes = 30)).isoformat()
 
     # create body to be used by Freebusy request
     busy_body = {
@@ -234,21 +242,6 @@ def freebusy(date, time):
 
     # refine returned date to only have list of busy times
     busy_dict = results[u'calendars']
-
     busy_list = busy_dict[f'{username}@student.wethinkcode.co.za']['busy']
 
     return busy_list
-
-
-    
-"""
-mock function calls
-"""
-
-# get_calendar()
-# print(freebusy('2020-12-11', '10:00'))
-# create_event("anything goes", '2020-12-15', '08:00')
-# add_attendee("sjfh15a9pvc8fnu0s8re49imgk", 'my TDD broke')
-# remove_attendee("sjfh15a9pvc8fnu0s8re49imgk")
-# delete_event("d29jdh52tuv6g9r3b9f92b0dqk")
-

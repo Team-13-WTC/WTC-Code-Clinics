@@ -1,55 +1,78 @@
 import argparse
-from argparse import ArgumentParser
 from interface import run_clinic
-import os.path as path
 from configuration import create_configuration
 
 
 def create_arguments():
-
+    """
+    Setup all the arguments that can be interpreted by the program
+    and assigns the arguments entered by the user to the apropriate 
+    argument variable
+    Parameter: Nothing
+    Return: Namespace of all possible arguments and their attributes
+    """
     
     ap = argparse.ArgumentParser(add_help=False)
 
-    ap.add_argument('-p', '--personal', default = False, action = 'store_true', help = "Allows user to work on their personal calendar instead of the Code Clinic calendar")
+    # View your Calendar
+    ap.add_argument('-p', '--personal', default = False, action = 'store_true')
 
-    ap.add_argument('-b', '--book', default = False, action = 'store_true', help = "book an event")
+    # book an event
+    ap.add_argument('-b', '--book', default = False, action = 'store_true')
 
-    ap.add_argument('-c', '--cancel', default = False, action = 'store_true', help = "cancel an event")
+    # cancel an event
+    ap.add_argument('-c', '--cancel', default = False, action = 'store_true')
 
-    ap.add_argument('-d', '--delete', default = False, action = 'store_true', help = "delete an event")
+    # delete an event
+    ap.add_argument('-d', '--delete', default = False, action = 'store_true')
 
-    ap.add_argument('-v', '--volunteer', default = False, action = 'store_true', help = "create an event")
+    # create an event
+    ap.add_argument('-v', '--volunteer', default = False, action = 'store_true')
 
-    ap.add_argument('-r', '--retrieve', default = False, action = 'store_true', help = "See your calendar")
+    # View Code Clinic Calendar
+    ap.add_argument('-r', '--retrieve', default = False, action = 'store_true')
 
-    ap.add_argument('-date', nargs='?', dest= "date", help = 'yyyy-mm-dd')
+    # yyyy-mm-dd
+    ap.add_argument('-date', nargs='?', dest= "date")
 
-    ap.add_argument('-time', nargs='?', dest= "time", help = 'HH:MM')
+    # HH:MM
+    ap.add_argument('-time', nargs='?', dest= "time")
 
-    ap.add_argument('-e', '--description', nargs='?', dest= "description", help = 'Add some info')
+    # Add what you can help with or what you need help with
+    ap.add_argument('-e', '--description', nargs='?', dest= "description")
 
-    ap.add_argument('-id', nargs='?', dest= "id", help = 'id of event')
+    # id of event
+    ap.add_argument('-id', nargs='?', dest= "id")
 
-    ap.add_argument('-u', "--update", default = False, action = 'store_true', help = "give it number")
+    # amount of days to view calendar for
+    ap.add_argument('-u', "--update", default = False, action = 'store_true')
 
-    ap.add_argument('-days', nargs='?', dest= "days", help = 'HH:MM')
+    # number between 0 and 100
+    ap.add_argument('-days', nargs='?', dest= "days")
 
-    ap.add_argument('-h', '--help', default = False, action = 'store_true', help = "Print help menu")
+    # Print help menu
+    ap.add_argument('-h', '--help', default = False, action = 'store_true')
 
-    ap.add_argument('-hv', default = False, action = 'store_true', help = "Print help volunteer menu")
+    # Print help volunteer menu
+    ap.add_argument('-hv', default = False, action = 'store_true')
 
-    ap.add_argument('-hb', default = False, action = 'store_true', help = "Print help book menu")
+    # Print help book menu
+    ap.add_argument('-hb', default = False, action = 'store_true')
 
-    ap.add_argument('-hr', default = False, action = 'store_true', help = "Print help retrieve menu")
+    # Print help retrieve menu
+    ap.add_argument('-hr', default = False, action = 'store_true')
 
-    ap.add_argument('-hc', default = False, action = 'store_true', help = "Print help cancel menu")
+    # Print help cancel menu
+    ap.add_argument('-hc', default = False, action = 'store_true')
 
-    ap.add_argument('-hd', default = False, action = 'store_true', help = "Print help delete menu")
+    # Print help delete menu
+    ap.add_argument('-hd', default = False, action = 'store_true')
+ 
+    # Personal calendar help
+    ap.add_argument('-hp', default = False, action = 'store_true')
 
-    ap.add_argument('-hp', default = False, action = 'store_true', help = "Personal calendar help")
-
-    ap.add_argument('-hu', default = False, action = 'store_true', help = "Change calendar days help")
-
+    # Change calendar days help
+    ap.add_argument('-hu', default = False, action = 'store_true')
 
     args = ap.parse_args()
 
@@ -60,6 +83,3 @@ if __name__ == "__main__":
     
     create_configuration.setup_config()
     run_clinic.start(create_arguments())
-    
-#sphe clean up create_config
-# change print('Valid operations are --volunteer --book --delete --cancel --retrieve') to help function call
