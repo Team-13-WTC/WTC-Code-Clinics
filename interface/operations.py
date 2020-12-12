@@ -80,6 +80,7 @@ def delete_slot(id):
 
     if id and id in delete_list:
         calendar_api.delete_event(id)
+        print(f"Your slot has been deleted.")
 
     elif not id:
         print('These are your volunteered slots to delete:')

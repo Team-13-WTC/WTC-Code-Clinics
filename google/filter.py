@@ -30,7 +30,9 @@ def filter_for_booking():
     username = config.retrieve_variable('username')
     code_clinic_events = filter_for_codeclinic()
     open_slots = filter(lambda x: len(x['attendees']) == 1 and username \
-                    not in x['creator']['email'], code_clinic_events)
+                    not in x['creator']['email'] 
+                    and filter_available_creation(x['start']['dateTime'][:10], 
+                            x['start']['dateTime'][11:16]), code_clinic_events)
     
     return list(open_slots)
 
