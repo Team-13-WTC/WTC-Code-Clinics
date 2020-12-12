@@ -47,9 +47,8 @@ def book_slot(id, description):
         to_book_list.append(event['id'])
 
     if id and id in to_book_list:
-        volunteer = (event['creator']['email']).split('@')[0]
         calendar_api.add_attendee(id, description)
-        print(f"Thank you for booking a slot with {volunteer}")
+        print(f"Thank you for booking a slot.")
 
     elif not id:
         print('These are the slots available to book:')
@@ -110,8 +109,7 @@ def cancel_booking(id):
 
     if id and id in cancel_list:
         calendar_api.remove_attendee(id)
-        volunteer = (event['creator']['email']).split('@')[0]
-        print(f"You have cancelled your booking with {volunteer} successfully.")
+        print(f"You have cancelled your booking successfully.")
 
     elif not id:
         print('These are your booked slots to cancel:')
